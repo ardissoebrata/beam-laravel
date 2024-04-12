@@ -1,0 +1,23 @@
+{
+    "Password": "Kata Sandi",
+    "Remember me": "Ingat saya",
+    "Forgot your password?" : "Lupa kata sandi?",
+    "Name": "Nama",
+    "Confirm Password": "Konfirmasi Kata Sandi",
+    "Already registered?": "Sudah terdaftar?",
+    "Register": "Daftar",
+    "Reset Password Notification": "Notifikasi Reset Password",
+    "You are receiving this email because we received a password reset request for your account.": "Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.",
+    "Reset Password": "Reset Password",
+    "This password reset link will expire in :count minutes.": "Link reset password ini akan kadaluarsa dalam :count menit.",
+    "If you did not request a password reset, no further action is required.": "Jika Anda tidak meminta reset password, tidak diperlukan tindakan lebih lanjut.",
+    "Verify Email Address Notification": "Notifikasi Verifikasi Alamat Email",
+    "Please click the button below to verify your email address.": "Silakan klik tombol di bawah ini untuk memverifikasi alamat email Anda.",
+    "Verify Email Address": "Verifikasi Alamat Email",
+    "If you did not create an account, no further action is required.": "Jika Anda tidak membuat akun, tidak diperlukan tindakan lebih lanjut.",
+    "Regards": "Salam",
+    "Whoops!": "Ups!",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Jika Anda mengalami masalah saat mengklik tombol \":actionText\", copy dan paste URL di bawah ini\nke dalam web browser Anda:",
+    "All rights reserved.": "All rights reserved.",
+    "Dashboard": "Dasbor"
+}

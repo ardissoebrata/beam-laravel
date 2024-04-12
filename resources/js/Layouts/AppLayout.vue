@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 
 defineProps({
     title: String,
@@ -49,7 +50,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    {{ __('Dashboard') }}
                                 </NavLink>
                             </div>
                         </div>
@@ -157,6 +158,10 @@ const logout = () => {
                                     </template>
                                 </Dropdown>
                             </div>
+
+                            <div class="ms-3 relative">
+                                <LanguageSwitcher />
+                            </div>
                         </div>
 
                         <!-- Hamburger -->
@@ -192,7 +197,7 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            {{ __('Dashboard') }}
                         </ResponsiveNavLink>
                     </div>
 
