@@ -186,6 +186,7 @@ return [
     'attributes' => [
         'name' => 'Nama',
         'email' => 'Alamat Email',
-        'current_password' => 'Password Lama',
+        'password' => 'Kata Sandi',
+        'current_password' => 'Kata Sandi Saat Ini',
     ],
 ];

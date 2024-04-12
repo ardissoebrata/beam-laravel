@@ -14,7 +14,7 @@ return [
     */
 
     'failed' => 'Kredensial ini tidak cocok dengan yang ada pada database.',
-    'password' => 'Password yang dimasukkan tidak sesuai.',
+    'password' => 'Kata Sandi yang dimasukkan tidak sesuai.',
     'throttle' => 'Terlalu banyak mencoba login. Silakan coba lagi dalam :seconds detik.',
 
 ];

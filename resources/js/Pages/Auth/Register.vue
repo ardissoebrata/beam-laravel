@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { computed, inject } from 'vue';
 
 const form = useForm({
     name: '',
@@ -21,10 +22,18 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const __ = inject('__');
+const terms_and_privacy_policy = computed(() => {
+    return __('I agree to the :terms_of_service and :privacy_policy', {
+        'terms_of_service': '<a target="_blank" href="' + route('terms.show') + '" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">' + __('Terms of Service') + '</a>',
+        'privacy_policy': '<a target="_blank" href="' + route('policy.show') + '" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">' + __('Privacy Policy') + '</a>'
+    });
+});
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head :title="__('Register')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -90,8 +99,7 @@ const submit = () => {
                     <div class="flex items-center">
                         <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
 
-                        <div class="ms-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">Privacy Policy</a>
+                        <div class="ms-2" v-html="terms_and_privacy_policy">
                         </div>
                     </div>
                     <InputError class="mt-2" :message="form.errors.terms" />
