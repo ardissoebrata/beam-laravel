@@ -81,6 +81,8 @@
     "Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or enter the setup key.": "Autentikasi dua faktor sekarang diaktifkan. Pindai kode QR berikut menggunakan aplikasi otentikasi ponsel Anda atau masukkan kunci setup.",
     "Setup Key": "Kunci Setup",
     "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "Simpan kode pemulihan ini di manajer kata sandi yang aman. Mereka dapat digunakan untuk memulihkan akses ke akun Anda jika perangkat autentikasi dua faktor Anda hilang.",
+    "Regenerate Recovery Codes": "Regenerasi Ulang Kode Pemulihan",
+    "Show Recovery Codes": "Tampilkan Kode Pemulihan",
 
     "Browser Sessions": "Sesi Browser",
     "Manage and log out your active sessions on other browsers and devices.": "Kelola dan keluar dari sesi aktif Anda di browser dan perangkat lain.",
