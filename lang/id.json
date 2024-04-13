@@ -97,9 +97,52 @@
     "Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "Apakah Anda yakin ingin menghapus akun Anda? Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Silakan masukkan kata sandi Anda untuk mengonfirmasi bahwa Anda ingin menghapus akun Anda secara permanen.",
     "The password is incorrect.": "Kata Sandi salah.",
 
+    "Team Name": "Nama Tim",
+    "The team's name and owner information.": "Informasi nama tim dan pemilik.",
+    "Team Owner": "Pemilik Tim",
+
+    "Create Team": "Buat Tim",
+    "Team Details": "Detail Tim",
+    "Create a new team to collaborate with others on projects.": "Buat tim baru untuk berkolaborasi dengan orang lain pada proyek.",
+    "Create": "Buat",
+
+    "Add Team Member": "Tambah Anggota Tim",
+    "Add a new team member to your team, allowing them to collaborate with you.": "Tambahkan anggota tim baru ke tim Anda, memungkinkan mereka berkolaborasi dengan Anda.",
+    "Please provide the email address of the person you would like to add to this team.": "Harap berikan alamat email orang yang ingin Anda tambahkan ke tim ini.",
+    "Role": "Peran",
+    "Pending Team Invitations": "Undangan Tim yang Tertunda",
+    "These people have been invited to your team and have been sent an invitation email. They may join the team by accepting the email invitation.": "Orang-orang ini telah diundang ke tim Anda dan telah dikirimkan email undangan. Mereka dapat bergabung dengan tim dengan menerima undangan email.",
+    "Team Members": "Anggota Tim",
+    "All of the people that are part of this team.": "Semua orang yang menjadi bagian dari tim ini.",
+    "Leave": "Tinggalkan Tim",
+    "Manage Role": "Kelola Peran",
+    "Leave Team": "Tinggalkan Tim",
+    "Are you sure you would like to leave this team?": "Apakah Anda yakin ingin meninggalkan tim ini?",
+    "Remove Team Member": "Hapus Anggota Tim",
+    "Are you sure you would like to remove this person from the team?": "Apakah Anda yakin ingin menghapus orang ini dari tim?",
+    
+    "You have been invited to join the :team team!": "Anda telah diundang untuk bergabung dengan tim :team!",
+    "If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the team invitation:": "Jika Anda tidak memiliki akun, Anda dapat membuatnya dengan mengklik tombol di bawah ini. Setelah membuat akun, Anda dapat mengklik tombol penerimaan undangan dalam email ini untuk menerima undangan tim:",
+    "Create Account": "Buat Akun",
+    "If you already have an account, you may accept this invitation by clicking the button below:": "Jika Anda sudah memiliki akun, Anda dapat menerima undangan ini dengan mengklik tombol di bawah ini:",
+    "You may accept this invitation by clicking the button below:": "Anda dapat menerima undangan ini dengan mengklik tombol di bawah ini:",
+    "Accept Invitation": "Terima Undangan",
+    "If you did not expect to receive an invitation to this team, you may discard this email.": "Jika Anda tidak mengharapkan menerima undangan ke tim ini, Anda dapat menghapus email ini.",
+    "We were unable to find a registered user with this email address.": "Kami tidak dapat menemukan pengguna terdaftar dengan alamat email ini.",
+    "This user already belongs to the team.": "Pengguna ini sudah menjadi bagian dari tim.",
+    "This user has already been invited to the team.": "Pengguna ini sudah diundang ke tim.",
+
+    "Delete Team": "Hapus Tim",
+    "Permanently delete this team.": "Hapus tim ini secara permanen.",
+    "Once a team is deleted, all of its resources and data will be permanently deleted.": "Setelah tim dihapus, semua sumber daya dan data akan dihapus secara permanen.",
+    "Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted.": "Apakah Anda yakin ingin menghapus tim ini? Setelah tim dihapus, semua sumber daya dan data akan dihapus secara permanen.",
+    
+    "Remove": "Hapus",
     "Enable": "Aktifkan",
     "Disable": "Nonaktifkan",
     "Save": "Simpan",
     "Saved.": "Tersimpan.",
-    "Cancel": "Batal"
+    "Cancel": "Batal",
+    "Add": "Tambah",
+    "Added.": "Ditambahkan."
 }
