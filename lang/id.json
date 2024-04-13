@@ -136,13 +136,25 @@
     "Permanently delete this team.": "Hapus tim ini secara permanen.",
     "Once a team is deleted, all of its resources and data will be permanently deleted.": "Setelah tim dihapus, semua sumber daya dan data akan dihapus secara permanen.",
     "Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted.": "Apakah Anda yakin ingin menghapus tim ini? Setelah tim dihapus, semua sumber daya dan data akan dihapus secara permanen.",
-    
+
+    "API Token": "Token API",
+    "Create API Token": "Buat Token API",
+    "Permissions": "Izin",
+    "Please copy your new API token. For your security, it won't be shown again.": "Silakan salin token API baru Anda. Untuk keamanan Anda, ini tidak akan ditampilkan lagi.",
+    "Manage API Tokens": "Kelola Token API",
+    "You may delete any of your existing tokens if they are no longer needed.": "Anda dapat menghapus token yang ada jika tidak lagi diperlukan.",
+    "API Token Permissions": "Izin Token API",
+    "Delete API Token": "Hapus Token API",
+    "Are you sure you would like to delete this API token?": "Apakah Anda yakin ingin menghapus token API ini?",
+
     "Remove": "Hapus",
+    "Delete": "Hapus",
     "Enable": "Aktifkan",
     "Disable": "Nonaktifkan",
     "Save": "Simpan",
     "Saved.": "Tersimpan.",
     "Cancel": "Batal",
     "Add": "Tambah",
-    "Added.": "Ditambahkan."
+    "Added.": "Ditambahkan.",
+    "Close": "Tutup"
 }
