@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
+import DarkSwitcher from '@/Components/DarkSwitcher.vue';
 
 defineProps({
     canLogin: {
@@ -65,6 +66,7 @@ function handleImageError() {
                         </template>
 
                         <LanguageSwitcher />
+                        <DarkSwitcher />
                     </nav>
                 </header>
 
