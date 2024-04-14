@@ -44,9 +44,13 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createTeam(User $user): void
     {
+        $team_name = explode(' ', $user->name, 2)[0]."'s Team";
+        if (app()->getLocale() === 'id') {
+            $team_name = "Tim ".explode(' ', $user->name, 2)[0];
+        }
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'name' => $team_name,
             'personal_team' => true,
         ]));
     }
