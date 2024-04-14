@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -8,6 +8,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
+import { useDarkStore } from '@/darkStore';
 import DarkSwitcher from '@/Components/DarkSwitcher.vue';
 
 defineProps({
@@ -27,6 +28,18 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+const darkStore = useDarkStore();
+provide('darkStore', darkStore);
+
+onMounted(() => {
+    if (!localStorage.getItem('darkMode')) {
+        darkStore.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+        darkStore.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    }
+    document.documentElement.classList.toggle('dark', darkStore.isDarkMode);
+});
 </script>
 
 <template>
@@ -275,6 +288,13 @@ const logout = () => {
                                     </template>
                                 </template>
                             </template>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 pb-3 border-t border-gray-200 dark:border-gray-600">
+                        <div class="px-4">
+                            <LanguageSwitcher />
+                            <DarkSwitcher />
                         </div>
                     </div>
                 </div>

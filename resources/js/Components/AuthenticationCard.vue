@@ -1,6 +1,20 @@
 <script setup>
+import { onMounted, provide } from 'vue';
+import { useDarkStore } from '@/darkStore';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 import DarkSwitcher from '@/Components/DarkSwitcher.vue';
+
+const darkStore = useDarkStore();
+provide('darkStore', darkStore);
+
+onMounted(() => {
+    if (!localStorage.getItem('darkMode')) {
+        darkStore.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+        darkStore.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    }
+    document.documentElement.classList.toggle('dark', darkStore.isDarkMode);
+});
 </script>
 
 <template>

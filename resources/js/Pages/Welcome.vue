@@ -1,7 +1,9 @@
 <script setup>
+import { onMounted, provide } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
+import { useDarkStore } from '@/darkStore';
 import DarkSwitcher from '@/Components/DarkSwitcher.vue';
 
 defineProps({
@@ -27,6 +29,18 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
+const darkStore = useDarkStore();
+provide('darkStore', darkStore);
+
+onMounted(() => {
+    if (!localStorage.getItem('darkMode')) {
+        darkStore.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+        darkStore.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    }
+    document.documentElement.classList.toggle('dark', darkStore.isDarkMode);
+});
 </script>
 
 <template>
