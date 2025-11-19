@@ -51,7 +51,7 @@ const submit = handleSubmit((values) => {
                     class="w-full"
                     autofocus
                 />
-                <Message v-if="errors.name" severity="error" :closable="false" class="mt-2">
+                <Message v-if="errors.name" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                     {{ errors.name }}
                 </Message>
             </div>
@@ -69,7 +69,7 @@ const submit = handleSubmit((values) => {
                     autocomplete="username"
                     class="w-full"
                 />
-                <Message v-if="errors.email" severity="error" :closable="false" class="mt-2">
+                <Message v-if="errors.email" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                     {{ errors.email }}
                 </Message>
             </div>
@@ -89,7 +89,7 @@ const submit = handleSubmit((values) => {
                     class="w-full"
                     inputClass="w-full"
                 />
-                <Message v-if="errors.password" severity="error" :closable="false" class="mt-2">
+                <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                     {{ errors.password }}
                 </Message>
             </div>
@@ -109,7 +109,7 @@ const submit = handleSubmit((values) => {
                     class="w-full"
                     inputClass="w-full"
                 />
-                <Message v-if="errors.password_confirmation" severity="error" :closable="false" class="mt-2">
+                <Message v-if="errors.password_confirmation" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                     {{ errors.password_confirmation }}
                 </Message>
             </div>

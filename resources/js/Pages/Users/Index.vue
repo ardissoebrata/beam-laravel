@@ -102,7 +102,11 @@ const formatDate = (dateString: string) => {
                             :rows="users.per_page"
                             :totalRecords="users.total"
                             stripedRows
+                            removableSort
                             class="p-datatable-sm"
+                            scrollable
+                            scrollHeight="flex"
+                            tableStyle="min-width: 50rem"
                         >
                             <Column field="name" header="Name" sortable />
                             <Column field="email" header="Email" sortable />

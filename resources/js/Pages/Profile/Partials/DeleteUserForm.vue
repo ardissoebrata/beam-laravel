@@ -85,7 +85,7 @@ const closeModal = () => {
                         inputClass="w-full"
                         autofocus
                     />
-                    <Message v-if="errors.password" severity="error" :closable="false" class="mt-2">
+                    <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                         {{ errors.password }}
                     </Message>
                 </div>

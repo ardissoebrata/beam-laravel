@@ -80,7 +80,7 @@ const onSubmit = handleSubmit((values) => {
                                     :invalid="!!errors.name"
                                     class="w-full"
                                 />
-                                <Message v-if="errors.name" severity="error" :closable="false" class="mt-2">
+                                <Message v-if="errors.name" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                                     {{ errors.name }}
                                 </Message>
                             </div>
@@ -100,7 +100,7 @@ const onSubmit = handleSubmit((values) => {
                                     type="email"
                                     class="w-full"
                                 />
-                                <Message v-if="errors.email" severity="error" :closable="false" class="mt-2">
+                                <Message v-if="errors.email" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                                     {{ errors.email }}
                                 </Message>
                             </div>
@@ -123,7 +123,7 @@ const onSubmit = handleSubmit((values) => {
                                     :invalid="!!errors.role"
                                     class="w-full"
                                 />
-                                <Message v-if="errors.role" severity="error" :closable="false" class="mt-2">
+                                <Message v-if="errors.role" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                                     {{ errors.role }}
                                 </Message>
                             </div>
@@ -145,7 +145,7 @@ const onSubmit = handleSubmit((values) => {
                                     class="w-full"
                                     inputClass="w-full"
                                 />
-                                <Message v-if="errors.password" severity="error" :closable="false" class="mt-2">
+                                <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
                                     {{ errors.password }}
                                 </Message>
                             </div>
@@ -171,6 +171,8 @@ const onSubmit = handleSubmit((values) => {
                                     v-if="errors.password_confirmation"
                                     severity="error"
                                     :closable="false"
+                                    size="small"
+                                    variant="simple"
                                     class="mt-2"
                                 >
                                     {{ errors.password_confirmation }}
