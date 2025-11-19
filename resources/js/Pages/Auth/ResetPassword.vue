@@ -1,85 +1,112 @@
-<script setup>
-import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+<script setup lang="ts">
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Head, router } from '@inertiajs/vue3';
+import { useForm } from 'vee-validate';
+import { typedResetPasswordSchema } from '@/utils/validation';
+import InputText from 'primevue/inputtext';
+import Password from 'primevue/password';
+import Button from 'primevue/button';
+import Message from 'primevue/message';
 
-const props = defineProps({
-    email: String,
-    token: String,
+const props = defineProps<{
+    email: string;
+    token: string;
+}>();
+
+const { defineField, handleSubmit, errors } = useForm({
+    validationSchema: typedResetPasswordSchema,
+    initialValues: {
+        token: props.token,
+        email: props.email,
+        password: '',
+        password_confirmation: '',
+    },
 });
 
-const form = useForm({
-    token: props.token,
-    email: props.email,
-    password: '',
-    password_confirmation: '',
-});
+const [email, emailAttrs] = defineField('email');
+const [password, passwordAttrs] = defineField('password');
+const [password_confirmation, passwordConfirmationAttrs] = defineField('password_confirmation');
 
-const submit = () => {
-    form.post(route('password.update'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+const submit = handleSubmit((values) => {
+    router.post(route('password.store'), values, {
+        onFinish: () => {
+            password.value = '';
+            password_confirmation.value = '';
+        },
     });
-};
+});
 </script>
 
 <template>
-    <Head :title="__('Reset Password')" />
+    <GuestLayout>
+        <Head title="Reset Password" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <form @submit.prevent="submit">
+        <form @submit="submit" class="space-y-6">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
+                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
+                    Email
+                </label>
+                <InputText
                     id="email"
-                    v-model="form.email"
+                    v-model="email"
+                    v-bind="emailAttrs"
                     type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
+                    :invalid="!!errors.email"
                     autocomplete="username"
+                    class="w-full"
+                    autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <Message v-if="errors.email" severity="error" :closable="false" class="mt-2">
+                    {{ errors.email }}
+                </Message>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
+            <div>
+                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
+                    Password
+                </label>
+                <Password
                     id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
+                    v-model="password"
+                    v-bind="passwordAttrs"
+                    :invalid="!!errors.password"
+                    toggleMask
+                    :feedback="false"
                     autocomplete="new-password"
+                    class="w-full"
+                    inputClass="w-full"
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <Message v-if="errors.password" severity="error" :closable="false" class="mt-2">
+                    {{ errors.password }}
+                </Message>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
+            <div>
+                <label for="password_confirmation" class="mb-2 block text-sm font-medium text-gray-700">
+                    Confirm Password
+                </label>
+                <Password
                     id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
+                    v-model="password_confirmation"
+                    v-bind="passwordConfirmationAttrs"
+                    :invalid="!!errors.password_confirmation"
+                    toggleMask
+                    :feedback="false"
                     autocomplete="new-password"
+                    class="w-full"
+                    inputClass="w-full"
                 />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                <Message v-if="errors.password_confirmation" severity="error" :closable="false" class="mt-2">
+                    {{ errors.password_confirmation }}
+                </Message>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    {{ __('Reset Password') }}
-                </PrimaryButton>
+            <div class="flex items-center justify-end">
+                <Button
+                    type="submit"
+                    label="Reset Password"
+                />
             </div>
         </form>
-    </AuthenticationCard>
+    </GuestLayout>
 </template>

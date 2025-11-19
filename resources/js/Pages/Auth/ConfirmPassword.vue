@@ -1,63 +1,67 @@
-<script setup>
-import { ref } from 'vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+<script setup lang="ts">
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Head, router } from '@inertiajs/vue3';
+import { useForm } from 'vee-validate';
+import { typedConfirmPasswordSchema } from '@/utils/validation';
+import Password from 'primevue/password';
+import Button from 'primevue/button';
+import Message from 'primevue/message';
 
-const form = useForm({
-    password: '',
+const { defineField, handleSubmit, errors } = useForm({
+    validationSchema: typedConfirmPasswordSchema,
+    initialValues: {
+        password: '',
+    },
 });
 
-const passwordInput = ref(null);
+const [password, passwordAttrs] = defineField('password');
 
-const submit = () => {
-    form.post(route('password.confirm'), {
+const submit = handleSubmit((values) => {
+    router.post(route('password.confirm'), values, {
         onFinish: () => {
-            form.reset();
-
-            passwordInput.value.focus();
+            password.value = '';
         },
     });
-};
+});
 </script>
 
 <template>
-    <Head :title="__('Secure Area')" />
+    <GuestLayout>
+        <Head title="Confirm Password" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+        <div class="mb-4 text-sm text-gray-600">
+            This is a secure area of the application. Please confirm your
+            password before continuing.
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit="submit" class="space-y-6">
             <div>
-                <InputLabel for="password" value="Password" />
-                <TextInput
+                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
+                    Password
+                </label>
+                <Password
                     id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
+                    v-model="password"
+                    v-bind="passwordAttrs"
+                    :invalid="!!errors.password"
+                    :feedback="false"
+                    toggleMask
                     autocomplete="current-password"
+                    class="w-full"
+                    inputClass="w-full"
                     autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <Message v-if="errors.password" severity="error" :closable="false" class="mt-2">
+                    {{ errors.password }}
+                </Message>
             </div>
 
-            <div class="flex justify-end mt-4">
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    {{ __('Confirm') }}
-                </PrimaryButton>
+            <div class="flex justify-end">
+                <Button
+                    type="submit"
+                    label="Confirm"
+                />
             </div>
         </form>
-    </AuthenticationCard>
+    </GuestLayout>
 </template>

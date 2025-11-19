@@ -1,61 +1,70 @@
-<script setup>
-import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+<script setup lang="ts">
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Head, router } from '@inertiajs/vue3';
+import { useForm } from 'vee-validate';
+import { typedForgotPasswordSchema } from '@/utils/validation';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Message from 'primevue/message';
 
-defineProps({
-    status: String,
+defineProps<{
+    status?: string;
+}>();
+
+const { defineField, handleSubmit, errors } = useForm({
+    validationSchema: typedForgotPasswordSchema,
+    initialValues: {
+        email: '',
+    },
 });
 
-const form = useForm({
-    email: '',
-});
+const [email, emailAttrs] = defineField('email');
 
-const submit = () => {
-    form.post(route('password.email'));
-};
+const submit = handleSubmit((values) => {
+    router.post(route('password.email'), values);
+});
 </script>
 
 <template>
-    <Head :title="__('Forgot Password')" />
+    <GuestLayout>
+        <Head title="Forgot Password" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        <div class="mb-4 text-sm text-gray-600">
+            Forgot your password? No problem. Just let us know your email
+            address and we will email you a password reset link that will allow
+            you to choose a new one.
         </div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+        <Message v-if="status" severity="success" :closable="false" class="mb-4">
             {{ status }}
-        </div>
+        </Message>
 
-        <form @submit.prevent="submit">
+        <form @submit="submit" class="space-y-6">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
+                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
+                    Email
+                </label>
+                <InputText
                     id="email"
-                    v-model="form.email"
+                    v-model="email"
+                    v-bind="emailAttrs"
                     type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
+                    :invalid="!!errors.email"
                     autocomplete="username"
+                    class="w-full"
+                    autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <Message v-if="errors.email" severity="error" :closable="false" class="mt-2">
+                    {{ errors.email }}
+                </Message>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    {{ __('Email Password Reset Link') }}
-                </PrimaryButton>
+            <div class="flex items-center justify-end">
+                <Button
+                    type="submit"
+                    label="Email Password Reset Link"
+                />
             </div>
         </form>
-    </AuthenticationCard>
+    </GuestLayout>
 </template>

@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -14,20 +14,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/language/{language}', function ($language) {
-    if (!in_array($language, ['en', 'id'])) {
-        $language = app()->getLocale();
-    }
-    Session::put('locale', $language);
-    return redirect()->back();
-})->name('language');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Admin-only routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::resource('users', \App\Http\Controllers\UserController::class);
+});
+
+require __DIR__.'/auth.php';

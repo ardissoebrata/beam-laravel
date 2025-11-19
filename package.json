@@ -1,21 +1,35 @@
 {
+    "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "build": "vue-tsc && vite build",
+        "dev": "vite"
     },
     "devDependencies": {
-        "@inertiajs/vue3": "^1.0.14",
-        "@tailwindcss/forms": "^0.5.7",
-        "@tailwindcss/typography": "^0.5.10",
+        "@inertiajs/vue3": "^2.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/vite": "^4.0.0",
         "@vitejs/plugin-vue": "^5.0.0",
-        "autoprefixer": "^10.4.16",
-        "axios": ">=1.7.4",
-        "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4.32",
-        "tailwindcss": "^3.4.0",
-        "vite": "^5.0",
-        "vue": "^3.3.13"
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.11.0",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^2.0.0",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.2.1",
+        "typescript": "^5.6.3",
+        "vite": "^7.0.7",
+        "vue": "^3.4.0",
+        "vue-tsc": "^2.0.24"
+    },
+    "dependencies": {
+        "@inertiajs/vue3": "^2.2.18",
+        "@primeuix/themes": "^1.2.5",
+        "@vee-validate/zod": "^4.15.1",
+        "primeicons": "^7.0.0",
+        "primevue": "^4.4.1",
+        "vee-validate": "^4.15.1",
+        "vue": "^3.5.24",
+        "zod": "^4.1.12"
     }
 }
