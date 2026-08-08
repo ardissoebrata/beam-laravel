@@ -1,67 +1,54 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
-import { useForm } from 'vee-validate';
-import { typedConfirmPasswordSchema } from '@/utils/validation';
-import Password from 'primevue/password';
-import Button from 'primevue/button';
-import Message from 'primevue/message';
+import { Form, Head } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
+import { store } from '@/routes/password/confirm';
 
-const { defineField, handleSubmit, errors } = useForm({
-    validationSchema: typedConfirmPasswordSchema,
-    initialValues: {
-        password: '',
+defineOptions({
+    layout: {
+        title: 'Confirm password',
+        description:
+            'This is a secure area of the application. Please confirm your password before continuing.',
     },
-});
-
-const [password, passwordAttrs] = defineField('password');
-
-const submit = handleSubmit((values) => {
-    router.post(route('password.confirm'), values, {
-        onFinish: () => {
-            password.value = '';
-        },
-    });
 });
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Confirm Password" />
+    <Head title="Confirm password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your
-            password before continuing.
-        </div>
-
-        <form @submit="submit" class="space-y-6">
-            <div>
-                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
-                    Password
-                </label>
-                <Password
+    <Form
+        v-bind="store.form()"
+        reset-on-success
+        v-slot="{ errors, processing }"
+    >
+        <div class="space-y-6">
+            <div class="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <PasswordInput
                     id="password"
-                    v-model="password"
-                    v-bind="passwordAttrs"
-                    :invalid="!!errors.password"
-                    :feedback="false"
-                    toggleMask
+                    name="password"
+                    class="mt-1 block w-full"
+                    required
                     autocomplete="current-password"
-                    class="w-full"
-                    inputClass="w-full"
                     autofocus
                 />
-                <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.password }}
-                </Message>
+
+                <InputError :message="errors.password" />
             </div>
 
-            <div class="flex justify-end">
+            <div class="flex items-center">
                 <Button
-                    type="submit"
-                    label="Confirm"
-                />
+                    class="w-full"
+                    :disabled="processing"
+                    data-test="confirm-password-button"
+                >
+                    <Spinner v-if="processing" />
+                    Confirm password
+                </Button>
             </div>
-        </form>
-    </GuestLayout>
+        </div>
+    </Form>
 </template>

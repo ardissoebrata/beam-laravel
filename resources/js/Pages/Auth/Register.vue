@@ -1,132 +1,114 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
-import { useForm } from 'vee-validate';
-import { typedRegisterSchema } from '@/utils/validation';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
-import Button from 'primevue/button';
-import Message from 'primevue/message';
+import { Form, Head } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
+import TextLink from '@/components/TextLink.vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
+import { login } from '@/routes';
+import { store } from '@/routes/register';
 
-const { defineField, handleSubmit, errors } = useForm({
-    validationSchema: typedRegisterSchema,
-    initialValues: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
+defineProps<{
+    passwordRules: string;
+}>();
+
+defineOptions({
+    layout: {
+        title: 'Create an account',
+        description: 'Enter your details below to create your account',
     },
-});
-
-const [name, nameAttrs] = defineField('name');
-const [email, emailAttrs] = defineField('email');
-const [password, passwordAttrs] = defineField('password');
-const [password_confirmation, passwordConfirmationAttrs] = defineField('password_confirmation');
-
-const submit = handleSubmit((values) => {
-    router.post(route('register'), values, {
-        onFinish: () => {
-            password.value = '';
-            password_confirmation.value = '';
-        },
-    });
 });
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Register" />
+    <Head title="Register" />
 
-        <form @submit="submit" class="space-y-6">
-            <div>
-                <label for="name" class="mb-2 block text-sm font-medium text-gray-700">
-                    Name
-                </label>
-                <InputText
+    <Form
+        v-bind="store.form()"
+        :reset-on-success="['password', 'password_confirmation']"
+        v-slot="{ errors, processing }"
+        class="flex flex-col gap-6"
+    >
+        <div class="grid gap-6">
+            <div class="grid gap-2">
+                <Label for="name">Name</Label>
+                <Input
                     id="name"
-                    v-model="name"
-                    v-bind="nameAttrs"
-                    :invalid="!!errors.name"
-                    autocomplete="name"
-                    class="w-full"
+                    type="text"
+                    required
                     autofocus
+                    :tabindex="1"
+                    autocomplete="name"
+                    name="name"
+                    placeholder="Full name"
                 />
-                <Message v-if="errors.name" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.name }}
-                </Message>
+                <InputError :message="errors.name" />
             </div>
 
-            <div>
-                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
-                    Email
-                </label>
-                <InputText
+            <div class="grid gap-2">
+                <Label for="email">Email address</Label>
+                <Input
                     id="email"
-                    v-model="email"
-                    v-bind="emailAttrs"
                     type="email"
-                    :invalid="!!errors.email"
-                    autocomplete="username"
-                    class="w-full"
+                    required
+                    :tabindex="2"
+                    autocomplete="email"
+                    name="email"
+                    placeholder="email@example.com"
                 />
-                <Message v-if="errors.email" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.email }}
-                </Message>
+                <InputError :message="errors.email" />
             </div>
 
-            <div>
-                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
-                    Password
-                </label>
-                <Password
+            <div class="grid gap-2">
+                <Label for="password">Password</Label>
+                <PasswordInput
                     id="password"
-                    v-model="password"
-                    v-bind="passwordAttrs"
-                    :invalid="!!errors.password"
-                    toggleMask
-                    :feedback="false"
+                    required
+                    :tabindex="3"
                     autocomplete="new-password"
-                    class="w-full"
-                    inputClass="w-full"
+                    name="password"
+                    placeholder="Password"
+                    :passwordrules="passwordRules"
                 />
-                <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.password }}
-                </Message>
+                <InputError :message="errors.password" />
             </div>
 
-            <div>
-                <label for="password_confirmation" class="mb-2 block text-sm font-medium text-gray-700">
-                    Confirm Password
-                </label>
-                <Password
+            <div class="grid gap-2">
+                <Label for="password_confirmation">Confirm password</Label>
+                <PasswordInput
                     id="password_confirmation"
-                    v-model="password_confirmation"
-                    v-bind="passwordConfirmationAttrs"
-                    :invalid="!!errors.password_confirmation"
-                    toggleMask
-                    :feedback="false"
+                    required
+                    :tabindex="4"
                     autocomplete="new-password"
-                    class="w-full"
-                    inputClass="w-full"
+                    name="password_confirmation"
+                    placeholder="Confirm password"
+                    :passwordrules="passwordRules"
                 />
-                <Message v-if="errors.password_confirmation" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.password_confirmation }}
-                </Message>
+                <InputError :message="errors.password_confirmation" />
             </div>
 
-            <div class="flex items-center justify-between">
-                <Link
-                    :href="route('login')"
-                    class="text-sm text-gray-600 underline hover:text-gray-900"
-                >
-                    Already registered?
-                </Link>
+            <Button
+                type="submit"
+                class="mt-2 w-full"
+                tabindex="5"
+                :disabled="processing"
+                data-test="register-user-button"
+            >
+                <Spinner v-if="processing" />
+                Create account
+            </Button>
+        </div>
 
-                <Button
-                    type="submit"
-                    label="Register"
-                />
-            </div>
-        </form>
-    </GuestLayout>
+        <div class="text-center text-sm text-muted-foreground">
+            Already have an account?
+            <TextLink
+                :href="login()"
+                class="underline underline-offset-4"
+                :tabindex="6"
+                >Log in</TextLink
+            >
+        </div>
+    </Form>
 </template>

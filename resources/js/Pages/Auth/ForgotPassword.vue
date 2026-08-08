@@ -1,70 +1,66 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
-import { useForm } from 'vee-validate';
-import { typedForgotPasswordSchema } from '@/utils/validation';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Message from 'primevue/message';
+import { Form, Head } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import TextLink from '@/components/TextLink.vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
+import { login } from '@/routes';
+import { email } from '@/routes/password';
+
+defineOptions({
+    layout: {
+        title: 'Forgot password',
+        description: 'Enter your email to receive a password reset link',
+    },
+});
 
 defineProps<{
     status?: string;
 }>();
-
-const { defineField, handleSubmit, errors } = useForm({
-    validationSchema: typedForgotPasswordSchema,
-    initialValues: {
-        email: '',
-    },
-});
-
-const [email, emailAttrs] = defineField('email');
-
-const submit = handleSubmit((values) => {
-    router.post(route('password.email'), values);
-});
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Forgot Password" />
+    <Head title="Forgot password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
-        </div>
+    <div
+        v-if="status"
+        class="mb-4 text-center text-sm font-medium text-green-600"
+    >
+        {{ status }}
+    </div>
 
-        <Message v-if="status" severity="success" :closable="false" class="mb-4">
-            {{ status }}
-        </Message>
-
-        <form @submit="submit" class="space-y-6">
-            <div>
-                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
-                    Email
-                </label>
-                <InputText
+    <div class="space-y-6">
+        <Form v-bind="email.form()" v-slot="{ errors, processing }">
+            <div class="grid gap-2">
+                <Label for="email">Email address</Label>
+                <Input
                     id="email"
-                    v-model="email"
-                    v-bind="emailAttrs"
                     type="email"
-                    :invalid="!!errors.email"
-                    autocomplete="username"
-                    class="w-full"
+                    name="email"
+                    autocomplete="off"
                     autofocus
+                    placeholder="email@example.com"
                 />
-                <Message v-if="errors.email" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.email }}
-                </Message>
+                <InputError :message="errors.email" />
             </div>
 
-            <div class="flex items-center justify-end">
+            <div class="my-6 flex items-center justify-start">
                 <Button
-                    type="submit"
-                    label="Email Password Reset Link"
-                />
+                    class="w-full"
+                    :disabled="processing"
+                    data-test="email-password-reset-link-button"
+                >
+                    <Spinner v-if="processing" />
+                    Email password reset link
+                </Button>
             </div>
-        </form>
-    </GuestLayout>
+        </Form>
+
+        <div class="space-x-1 text-center text-sm text-muted-foreground">
+            <span>Or, return to</span>
+            <TextLink :href="login()">log in</TextLink>
+        </div>
+    </div>
 </template>

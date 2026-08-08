@@ -1,115 +1,107 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
-import { useForm } from 'vee-validate';
-import { typedLoginSchema } from '@/utils/validation';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
-import Checkbox from 'primevue/checkbox';
-import Button from 'primevue/button';
-import Message from 'primevue/message';
+import { Form, Head } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
+import TextLink from '@/components/TextLink.vue';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
+import { register } from '@/routes';
+import { store } from '@/routes/login';
+import { request } from '@/routes/password';
 
-defineProps<{
-    canResetPassword?: boolean;
-    status?: string;
-}>();
-
-const { defineField, handleSubmit, errors } = useForm({
-    validationSchema: typedLoginSchema,
-    initialValues: {
-        email: '',
-        password: '',
-        remember: false,
+defineOptions({
+    layout: {
+        title: 'Log in to your account',
+        description: 'Enter your email and password below to log in',
     },
 });
 
-const [email, emailAttrs] = defineField('email');
-const [password, passwordAttrs] = defineField('password');
-const [remember, rememberAttrs] = defineField('remember');
-
-const submit = handleSubmit((values) => {
-    router.post(route('login'), values, {
-        onFinish: () => {
-            password.value = '';
-        },
-    });
-});
+defineProps<{
+    status?: string;
+    canResetPassword: boolean;
+}>();
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Log in" />
+    <Head title="Log in" />
 
-        <Message v-if="status" severity="success" :closable="false" class="mb-4">
-            {{ status }}
-        </Message>
+    <div
+        v-if="status"
+        class="mb-4 text-center text-sm font-medium text-green-600"
+    >
+        {{ status }}
+    </div>
 
-        <form @submit="submit" class="space-y-6">
-            <div>
-                <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
-                    Email
-                </label>
-                <InputText
+    <Form
+        v-bind="store.form()"
+        :reset-on-success="['password']"
+        v-slot="{ errors, processing }"
+        class="flex flex-col gap-6"
+    >
+        <div class="grid gap-6">
+            <div class="grid gap-2">
+                <Label for="email">Email address</Label>
+                <Input
                     id="email"
-                    v-model="email"
-                    v-bind="emailAttrs"
                     type="email"
-                    :invalid="!!errors.email"
-                    autocomplete="username"
-                    class="w-full"
+                    name="email"
+                    required
                     autofocus
+                    :tabindex="1"
+                    autocomplete="email"
+                    placeholder="email@example.com"
                 />
-                <Message v-if="errors.email" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.email }}
-                </Message>
+                <InputError :message="errors.email" />
             </div>
 
-            <div>
-                <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
-                    Password
-                </label>
-                <Password
+            <div class="grid gap-2">
+                <div class="flex items-center justify-between">
+                    <Label for="password">Password</Label>
+                    <TextLink
+                        v-if="canResetPassword"
+                        :href="request()"
+                        class="text-sm"
+                        :tabindex="5"
+                    >
+                        Forgot your password?
+                    </TextLink>
+                </div>
+                <PasswordInput
                     id="password"
-                    v-model="password"
-                    v-bind="passwordAttrs"
-                    :invalid="!!errors.password"
-                    :feedback="false"
-                    toggleMask
+                    name="password"
+                    required
+                    :tabindex="2"
                     autocomplete="current-password"
-                    class="w-full"
-                    inputClass="w-full"
+                    placeholder="Password"
                 />
-                <Message v-if="errors.password" severity="error" :closable="false" size="small" variant="simple" class="mt-2">
-                    {{ errors.password }}
-                </Message>
-            </div>
-
-            <div class="flex items-center">
-                <Checkbox
-                    v-model="remember"
-                    v-bind="rememberAttrs"
-                    inputId="remember"
-                    :binary="true"
-                />
-                <label for="remember" class="ml-2 text-sm text-gray-600 cursor-pointer">
-                    Remember me
-                </label>
+                <InputError :message="errors.password" />
             </div>
 
             <div class="flex items-center justify-between">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="text-sm text-gray-600 underline hover:text-gray-900"
-                >
-                    Forgot your password?
-                </Link>
-
-                <Button
-                    type="submit"
-                    label="Log in"
-                />
+                <Label for="remember" class="flex items-center space-x-3">
+                    <Checkbox id="remember" name="remember" :tabindex="3" />
+                    <span>Remember me</span>
+                </Label>
             </div>
-        </form>
-    </GuestLayout>
+
+            <Button
+                type="submit"
+                class="mt-4 w-full"
+                :tabindex="4"
+                :disabled="processing"
+                data-test="login-button"
+            >
+                <Spinner v-if="processing" />
+                Log in
+            </Button>
+        </div>
+
+        <div class="text-center text-sm text-muted-foreground">
+            Don't have an account?
+            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+        </div>
+    </Form>
 </template>
