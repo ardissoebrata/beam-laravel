@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { register } from '@/lib/authRoutes';
 import { login } from '@/routes';
-import { store } from '@/routes/register';
 
 defineProps<{
     passwordRules: string;
@@ -26,7 +26,8 @@ defineOptions({
     <Head title="Register" />
 
     <Form
-        v-bind="store.form()"
+        :action="register()"
+        method="post"
         :reset-on-success="['password', 'password_confirmation']"
         v-slot="{ errors, processing }"
         class="flex flex-col gap-6"

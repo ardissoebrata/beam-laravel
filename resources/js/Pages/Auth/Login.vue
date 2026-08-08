@@ -8,9 +8,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
+import { forgotPassword, register } from '@/lib/authRoutes';
 import { store } from '@/routes/login';
-import { request } from '@/routes/password';
 
 defineOptions({
     layout: {
@@ -62,7 +61,7 @@ defineProps<{
                     <Label for="password">Password</Label>
                     <TextLink
                         v-if="canResetPassword"
-                        :href="request()"
+                        :href="forgotPassword()"
                         class="text-sm"
                         :tabindex="5"
                     >
@@ -99,7 +98,10 @@ defineProps<{
             </Button>
         </div>
 
-        <div class="text-center text-sm text-muted-foreground">
+        <div
+            v-if="$page.props.auth.features.registration"
+            class="text-center text-sm text-muted-foreground"
+        >
             Don't have an account?
             <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
         </div>

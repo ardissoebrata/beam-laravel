@@ -1,78 +1,38 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Support\Facades\Notification;
-use Laravel\Fortify\Features;
+test('forgot password screen cannot be rendered when reset passwords is disabled', function () {
+    $response = $this->get('/forgot-password');
 
-beforeEach(function () {
-    $this->skipUnlessFortifyHas(Features::resetPasswords());
+    $response->assertNotFound();
 });
 
-test('reset password link screen can be rendered', function () {
-    $response = $this->get(route('password.request'));
+test('reset password link cannot be requested when reset passwords is disabled', function () {
+    $response = $this->post('/forgot-password', [
+        'email' => 'test@example.com',
+    ]);
 
-    $response->assertOk();
+    $response->assertNotFound();
 });
 
-test('reset password link can be requested', function () {
-    Notification::fake();
+test('reset password screen cannot be rendered when reset passwords is disabled', function () {
+    $response = $this->get('/reset-password/fake-token');
 
-    $user = User::factory()->create();
-
-    $this->post(route('password.email'), ['email' => $user->email]);
-
-    Notification::assertSentTo($user, ResetPassword::class);
+    $response->assertNotFound();
 });
 
-test('reset password screen can be rendered', function () {
-    Notification::fake();
-
-    $user = User::factory()->create();
-
-    $this->post(route('password.email'), ['email' => $user->email]);
-
-    Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-        $response = $this->get(route('password.reset', $notification->token));
-
-        $response->assertOk();
-
-        return true;
-    });
-});
-
-test('password can be reset with valid token', function () {
-    Notification::fake();
-
-    $user = User::factory()->create();
-
-    $this->post(route('password.email'), ['email' => $user->email]);
-
-    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-        $response = $this->post(route('password.update'), [
-            'token' => $notification->token,
-            'email' => $user->email,
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect(route('login'));
-
-        return true;
-    });
-});
-
-test('password cannot be reset with invalid token', function () {
-    $user = User::factory()->create();
-
-    $response = $this->post(route('password.update'), [
-        'token' => 'invalid-token',
-        'email' => $user->email,
+test('password cannot be reset when reset passwords is disabled', function () {
+    $response = $this->post('/reset-password/fake-token', [
+        'token' => 'fake-token',
+        'email' => 'test@example.com',
         'password' => 'newpassword123',
         'password_confirmation' => 'newpassword123',
     ]);
 
-    $response->assertSessionHasErrors('email');
+    $response->assertNotFound();
+});
+
+test('login page does not show forgot password link when reset passwords is disabled', function () {
+    $this->get(route('login'))
+        ->assertOk()
+        ->assertDontSeeText('Forgot your password?');
 });
