@@ -1,19 +1,27 @@
 {
-    "$schema": "https://shadcn-vue.com/schema.json",
-    "style": "new-york-v4",
-    "tailwind": {
-        "config": "tailwind.config.js",
-        "css": "resources/css/app.css",
-        "baseColor": "neutral",
-        "cssVariables": true,
-        "prefix": ""
-    },
-    "aliases": {
-        "components": "@/components",
-        "composables": "@/composables",
-        "utils": "@/lib/utils",
-        "ui": "@/components/ui",
-        "lib": "@/lib"
-    },
-    "iconLibrary": "lucide"
+  "$schema": "https://shadcn-vue.com/schema.json",
+  "style": "reka-mira",
+  "tailwind": {
+    "config": "",
+    "css": "resources/css/app.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "composables": "@/composables",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib"
+  },
+  "iconLibrary": "lucide",
+  "font": "roboto",
+  "typescript": true,
+  "rtl": false,
+  "pointer": false,
+  "fontHeading": "inter",
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
 }
