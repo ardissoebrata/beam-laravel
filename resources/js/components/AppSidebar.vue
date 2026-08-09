@@ -1,20 +1,33 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import {
+    BookOpen,
+    Database,
+    FolderGit2,
+    LayoutGrid,
+    Settings2,
+    Users,
+} from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
+import NavTree from '@/components/NavTree.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
+    SidebarGroup,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { edit as editAppearance } from '@/routes/appearance';
+import { edit as editProfile } from '@/routes/profile';
+import { edit as editSecurity } from '@/routes/security';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,6 +35,67 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+];
+
+const treeNavGroups = [
+    {
+        label: 'Workspace',
+        nodes: [
+            {
+                title: 'Overview',
+                href: dashboard().url,
+                icon: LayoutGrid,
+            },
+            {
+                title: 'Projects',
+                icon: FolderGit2,
+                children: [
+                    { title: 'Active projects' },
+                    { title: 'Archived projects' },
+                    { title: 'Project templates' },
+                ],
+            },
+            {
+                title: 'Team',
+                icon: Users,
+                children: [
+                    { title: 'Members' },
+                    { title: 'Roles and permissions' },
+                    { title: 'Invitations' },
+                ],
+            },
+        ],
+    },
+    {
+        label: 'Resources',
+        nodes: [
+            {
+                title: 'Data library',
+                icon: Database,
+                children: [
+                    {
+                        title: 'Reports',
+                        children: [
+                            { title: 'Monthly reports' },
+                            { title: 'Quarterly reports' },
+                            { title: 'Export history' },
+                        ],
+                    },
+                    { title: 'Datasets' },
+                    { title: 'Integrations' },
+                ],
+            },
+            {
+                title: 'Settings',
+                icon: Settings2,
+                children: [
+                    { title: 'Profile', href: editProfile().url },
+                    { title: 'Security', href: editSecurity().url },
+                    { title: 'Appearance', href: editAppearance().url },
+                ],
+            },
+        ],
     },
 ];
 
@@ -55,6 +129,14 @@ const footerNavItems: NavItem[] = [
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <SidebarGroup
+                v-for="group in treeNavGroups"
+                :key="group.label"
+                class="px-2 py-0"
+            >
+                <SidebarGroupLabel>{{ group.label }}</SidebarGroupLabel>
+                <NavTree :nodes="group.nodes" />
+            </SidebarGroup>
         </SidebarContent>
 
         <SidebarFooter>
