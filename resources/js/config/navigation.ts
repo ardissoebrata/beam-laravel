@@ -11,6 +11,7 @@ import { dashboard } from '@/routes';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editProfile } from '@/routes/profile';
 import { edit as editSecurity } from '@/routes/security';
+import { index as usersIndex } from '@/routes/users';
 import type {
     NavItem,
     NavigationGroup,
@@ -35,13 +36,9 @@ export const treeNavGroups: NavigationGroup[] = [
                 ],
             },
             {
-                title: 'Team',
+                title: 'Users',
+                href: usersIndex().url,
                 icon: Users,
-                children: [
-                    { title: 'Members' },
-                    { title: 'Roles and permissions' },
-                    { title: 'Invitations' },
-                ],
             },
         ],
     },
