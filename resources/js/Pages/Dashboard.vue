@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
+import PlaceholderPattern from '@/components/base/PlaceholderPattern.vue';
 import { dashboard } from '@/routes';
 
 defineOptions({

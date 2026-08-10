@@ -8,11 +8,11 @@ import {
     Settings2,
     Users,
 } from '@lucide/vue';
-import AppLogo from '@/components/AppLogo.vue';
-import NavFooter from '@/components/NavFooter.vue';
-import NavMain from '@/components/NavMain.vue';
-import NavTree from '@/components/NavTree.vue';
-import NavUser from '@/components/NavUser.vue';
+import AppLogo from '@/components/layout/AppLogo.vue';
+import NavFooter from '@/components/navigation/NavFooter.vue';
+import NavMain from '@/components/navigation/NavMain.vue';
+import NavTree from '@/components/navigation/NavTree.vue';
+import NavUser from '@/components/navigation/NavUser.vue';
 import {
     Sidebar,
     SidebarContent,

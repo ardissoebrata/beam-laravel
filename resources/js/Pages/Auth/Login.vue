@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
-import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
-import TextLink from '@/components/TextLink.vue';
+import TextLink from '@/components/base/TextLink.vue';
+import FormField from '@/components/form/FormField.vue';
+import PasswordInput from '@/components/form/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -41,43 +41,54 @@ defineProps<{
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <div class="grid gap-2">
-                <Label for="email">Email address</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    name="email"
-                    required
-                    autofocus
-                    :tabindex="1"
-                    autocomplete="email"
-                    placeholder="email@example.com"
-                />
-                <InputError :message="errors.email" />
-            </div>
+            <FormField
+                id="email"
+                label="Email address"
+                :error="errors.email"
+                required
+            >
+                <template #default="field">
+                    <Input
+                        type="email"
+                        name="email"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="email"
+                        placeholder="email@example.com"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
-            <div class="grid gap-2">
-                <div class="flex items-center justify-between">
-                    <Label for="password">Password</Label>
-                    <TextLink
-                        v-if="canResetPassword"
-                        :href="forgotPassword()"
-                        class="text-sm"
-                        :tabindex="5"
-                    >
-                        Forgot your password?
-                    </TextLink>
-                </div>
-                <PasswordInput
-                    id="password"
-                    name="password"
-                    required
-                    :tabindex="2"
-                    autocomplete="current-password"
-                    placeholder="Password"
-                />
-                <InputError :message="errors.password" />
-            </div>
+            <FormField
+                id="password"
+                label="Password"
+                :error="errors.password"
+                required
+            >
+                <template #default="field">
+                    <div class="flex items-center justify-between">
+                        <span class="sr-only">Password</span>
+                        <TextLink
+                            v-if="canResetPassword"
+                            :href="forgotPassword()"
+                            class="text-sm"
+                            :tabindex="5"
+                        >
+                            Forgot your password?
+                        </TextLink>
+                    </div>
+                    <PasswordInput
+                        name="password"
+                        required
+                        :tabindex="2"
+                        autocomplete="current-password"
+                        placeholder="Password"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
             <div class="flex items-center justify-between">
                 <Label for="remember" class="flex items-center space-x-3">

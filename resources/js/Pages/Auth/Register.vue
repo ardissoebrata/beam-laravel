@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
-import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
-import TextLink from '@/components/TextLink.vue';
+import TextLink from '@/components/base/TextLink.vue';
+import FormField from '@/components/form/FormField.vue';
+import PasswordInput from '@/components/form/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/lib/authRoutes';
 import { login } from '@/routes';
@@ -33,62 +32,77 @@ defineOptions({
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <div class="grid gap-2">
-                <Label for="name">Name</Label>
-                <Input
-                    id="name"
-                    type="text"
-                    required
-                    autofocus
-                    :tabindex="1"
-                    autocomplete="name"
-                    name="name"
-                    placeholder="Full name"
-                />
-                <InputError :message="errors.name" />
-            </div>
+            <FormField id="name" label="Name" :error="errors.name" required>
+                <template #default="field">
+                    <Input
+                        type="text"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="name"
+                        name="name"
+                        placeholder="Full name"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
-            <div class="grid gap-2">
-                <Label for="email">Email address</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    required
-                    :tabindex="2"
-                    autocomplete="email"
-                    name="email"
-                    placeholder="email@example.com"
-                />
-                <InputError :message="errors.email" />
-            </div>
+            <FormField
+                id="email"
+                label="Email address"
+                :error="errors.email"
+                required
+            >
+                <template #default="field">
+                    <Input
+                        type="email"
+                        required
+                        :tabindex="2"
+                        autocomplete="email"
+                        name="email"
+                        placeholder="email@example.com"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
-            <div class="grid gap-2">
-                <Label for="password">Password</Label>
-                <PasswordInput
-                    id="password"
-                    required
-                    :tabindex="3"
-                    autocomplete="new-password"
-                    name="password"
-                    placeholder="Password"
-                    :passwordrules="passwordRules"
-                />
-                <InputError :message="errors.password" />
-            </div>
+            <FormField
+                id="password"
+                label="Password"
+                :error="errors.password"
+                required
+            >
+                <template #default="field">
+                    <PasswordInput
+                        required
+                        :tabindex="3"
+                        autocomplete="new-password"
+                        name="password"
+                        placeholder="Password"
+                        :passwordrules="passwordRules"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
-            <div class="grid gap-2">
-                <Label for="password_confirmation">Confirm password</Label>
-                <PasswordInput
-                    id="password_confirmation"
-                    required
-                    :tabindex="4"
-                    autocomplete="new-password"
-                    name="password_confirmation"
-                    placeholder="Confirm password"
-                    :passwordrules="passwordRules"
-                />
-                <InputError :message="errors.password_confirmation" />
-            </div>
+            <FormField
+                id="password_confirmation"
+                label="Confirm password"
+                :error="errors.password_confirmation"
+                required
+            >
+                <template #default="field">
+                    <PasswordInput
+                        required
+                        :tabindex="4"
+                        autocomplete="new-password"
+                        name="password_confirmation"
+                        placeholder="Confirm password"
+                        :passwordrules="passwordRules"
+                        v-bind="field"
+                    />
+                </template>
+            </FormField>
 
             <Button
                 type="submit"

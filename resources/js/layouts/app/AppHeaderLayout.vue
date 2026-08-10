@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppContent from '@/components/AppContent.vue';
-import AppHeader from '@/components/AppHeader.vue';
-import AppShell from '@/components/AppShell.vue';
+import AppContent from '@/components/layout/AppContent.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
+import AppShell from '@/components/layout/AppShell.vue';
 import { Toaster } from '@/components/ui/sonner';
 import type { BreadcrumbItem } from '@/types';
 

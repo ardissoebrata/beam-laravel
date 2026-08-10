@@ -2,9 +2,9 @@
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import Heading from '@/components/Heading.vue';
-import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
+import Heading from '@/components/base/Heading.vue';
+import InputError from '@/components/form/InputError.vue';
+import PasswordInput from '@/components/form/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,

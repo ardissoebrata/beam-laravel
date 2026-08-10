@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import AppearanceTabs from '@/components/AppearanceTabs.vue';
-import Heading from '@/components/Heading.vue';
+import Heading from '@/components/base/Heading.vue';
+import AppearanceTabs from '@/components/settings/AppearanceTabs.vue';
 import { edit } from '@/routes/appearance';
 
 defineOptions({

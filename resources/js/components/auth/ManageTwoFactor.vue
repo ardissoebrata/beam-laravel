@@ -2,9 +2,9 @@
 import { Form } from '@inertiajs/vue3';
 import { ShieldCheck } from '@lucide/vue';
 import { onUnmounted, ref } from 'vue';
-import Heading from '@/components/Heading.vue';
-import TwoFactorRecoveryCodes from '@/components/TwoFactorRecoveryCodes.vue';
-import TwoFactorSetupModal from '@/components/TwoFactorSetupModal.vue';
+import TwoFactorRecoveryCodes from '@/components/auth/TwoFactorRecoveryCodes.vue';
+import TwoFactorSetupModal from '@/components/auth/TwoFactorSetupModal.vue';
+import Heading from '@/components/base/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import { disable, enable } from '@/routes/two-factor';
