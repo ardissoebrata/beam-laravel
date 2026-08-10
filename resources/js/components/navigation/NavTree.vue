@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { ChevronRight, FolderKanban } from '@lucide/vue';
-import type { Component } from 'vue';
 import { computed, ref } from 'vue';
 import {
     SidebarMenu,
@@ -11,25 +10,19 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
+import type { NavigationNode } from '@/types';
 
 defineOptions({ name: 'NavTree' });
 
-type TreeNode = {
-    title: string;
-    icon?: Component;
-    href?: string;
-    children?: TreeNode[];
-};
-
 const props = defineProps<{
-    nodes: TreeNode[];
+    nodes: NavigationNode[];
     level?: number;
 }>();
 
 const { isCurrentUrl, isCurrentOrParentUrl } = useCurrentUrl();
 const openNodes = ref<Record<string, boolean>>({});
 
-const containsActiveNode = (node: TreeNode): boolean => {
+const containsActiveNode = (node: NavigationNode): boolean => {
     if (node.href && isCurrentOrParentUrl(node.href)) {
         return true;
     }
@@ -37,24 +30,24 @@ const containsActiveNode = (node: TreeNode): boolean => {
     return Boolean(node.children?.some(containsActiveNode));
 };
 
-const isOpen = (node: TreeNode) => {
+const isOpen = (node: NavigationNode) => {
     const key = `${props.level ?? 0}:${node.title}`;
 
     return openNodes.value[key] ?? containsActiveNode(node);
 };
 
-const toggleNode = (node: TreeNode) => {
+const toggleNode = (node: NavigationNode) => {
     const key = `${props.level ?? 0}:${node.title}`;
 
     openNodes.value[key] = !isOpen(node);
 };
 
-const hasChildren = (node: TreeNode) => Boolean(node.children?.length);
+const hasChildren = (node: NavigationNode) => Boolean(node.children?.length);
 
-const isActive = (node: TreeNode) =>
+const isActive = (node: NavigationNode) =>
     Boolean(node.href && isCurrentUrl(node.href));
 
-const isParentActive = (node: TreeNode) => containsActiveNode(node);
+const isParentActive = (node: NavigationNode) => containsActiveNode(node);
 
 const menuItems = computed(() => props.nodes);
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
-import { LogOut, Settings } from '@lucide/vue';
+import { LogOut } from '@lucide/vue';
 import UserInfo from '@/components/navigation/UserInfo.vue';
 import {
     DropdownMenuGroup,
@@ -8,8 +8,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { userNavItems } from '@/config/navigation';
 import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
 type Props = {
@@ -31,10 +31,14 @@ defineProps<Props>();
     </DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
-        <DropdownMenuItem :as-child="true">
-            <Link class="block w-full cursor-pointer" :href="edit()" prefetch>
-                <Settings class="mr-2 h-4 w-4" />
-                Settings
+        <DropdownMenuItem
+            v-for="item in userNavItems"
+            :key="item.title"
+            :as-child="true"
+        >
+            <Link class="block w-full cursor-pointer" :href="item.href" prefetch>
+                <component :is="item.icon" class="mr-2 h-4 w-4" />
+                {{ item.title }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
