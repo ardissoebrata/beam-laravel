@@ -1,6 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import PrimeVue from 'primevue/config';
-import { createApp, h } from 'vue';
+import { createApp, createSSRApp, h } from 'vue';
 import { initializeTheme } from '@/composables/useAppearance';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
@@ -27,12 +27,19 @@ createInertiaApp({
         color: '#4B5563',
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const vueApp = (import.meta.env.SSR ? createSSRApp : createApp)({
+            render: () => h(App, props),
+        })
             .use(plugin)
             .use(PrimeVue, {
                 unstyled: true,
-            })
-            .mount(el!);
+            });
+
+        if (el) {
+            vueApp.mount(el);
+        }
+
+        return vueApp;
     },
 });
 
