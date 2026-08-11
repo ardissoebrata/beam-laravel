@@ -12,5 +12,5 @@ const emits = defineEmits<SelectContentEmits>()
 const forwarded = useForwardPropsEmits(reactiveOmit(props, 'class'), emits)
 </script>
 <template>
-  <SelectPortal><SelectContent data-slot="select-content" v-bind="{ ...$attrs, ...forwarded }" :class="cn('bg-popover text-popover-foreground relative z-50 max-h-(--reka-select-content-available-height) min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border shadow-md', props.class)"><SelectScrollUpButton /><SelectViewport :class="cn('p-1', position === 'popper' && 'h-[var(--reka-select-trigger-height)] w-full min-w-[var(--reka-select-trigger-width)] scroll-my-1')"><slot /></SelectViewport><SelectScrollDownButton /></SelectContent></SelectPortal>
+  <SelectPortal><SelectContent data-slot="select-content" v-bind="{ ...$attrs, ...forwarded }" :class="cn('bg-popover text-popover-foreground relative z-50 max-h-(--reka-select-content-available-height) min-w-32 overflow-x-hidden overflow-y-auto rounded-md border shadow-md', props.class)"><SelectScrollUpButton /><SelectViewport :class="cn('p-1', position === 'popper' && 'h-(--reka-select-trigger-height) w-full min-w-(--reka-select-trigger-width) scroll-my-1')"><slot /></SelectViewport><SelectScrollDownButton /></SelectContent></SelectPortal>
 </template>
