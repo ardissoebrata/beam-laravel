@@ -2,12 +2,12 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from '@lucide/vue';
 import { computed } from 'vue';
+import Button from '@/components/base/Button.vue';
 import AppLogo from '@/components/layout/AppLogo.vue';
 import AppLogoIcon from '@/components/layout/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/navigation/Breadcrumbs.vue';
 import UserMenuContent from '@/components/navigation/UserMenuContent.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,

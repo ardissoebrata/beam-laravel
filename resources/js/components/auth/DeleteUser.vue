@@ -2,10 +2,11 @@
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import Button from '@/components/base/Button.vue';
 import Heading from '@/components/base/Heading.vue';
+import Label from '@/components/base/Label.vue';
 import InputError from '@/components/form/InputError.vue';
 import PasswordInput from '@/components/form/PasswordInput.vue';
-import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogClose,
@@ -16,7 +17,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
 
 const passwordInput = useTemplateRef('passwordInput');
 </script>

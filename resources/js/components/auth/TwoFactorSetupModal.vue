@@ -3,9 +3,9 @@ import { Form } from '@inertiajs/vue3';
 import { Check, Copy, ScanLine } from '@lucide/vue';
 import { useClipboard } from '@vueuse/core';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
+import Button from '@/components/base/Button.vue';
 import AlertError from '@/components/feedback/AlertError.vue';
 import InputError from '@/components/form/InputError.vue';
-import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,

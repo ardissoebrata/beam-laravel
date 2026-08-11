@@ -151,7 +151,6 @@ onBeforeUnmount(() => {
             :show-headers="true"
             removable-sort
             row-hover
-            striped-rows
             scrollable
             class="min-w-2xl text-sm"
             @page="handlePage"

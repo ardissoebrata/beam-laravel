@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
+import Button from '@/components/base/Button.vue';
+import Input from '@/components/base/Input.vue';
+import Label from '@/components/base/Label.vue';
 import TextLink from '@/components/base/TextLink.vue';
 import FormField from '@/components/form/FormField.vue';
 import PasswordInput from '@/components/form/PasswordInput.vue';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { forgotPassword, register } from '@/lib/authRoutes';
 import { store } from '@/routes/login';

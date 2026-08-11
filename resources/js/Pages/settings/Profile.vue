@@ -3,11 +3,11 @@ import { Form, Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/auth/DeleteUser.vue';
+import Button from '@/components/base/Button.vue';
 import Heading from '@/components/base/Heading.vue';
+import Input from '@/components/base/Input.vue';
+import Label from '@/components/base/Label.vue';
 import InputError from '@/components/form/InputError.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/profile';
 
 defineOptions({

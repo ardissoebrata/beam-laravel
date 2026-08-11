@@ -24,7 +24,7 @@
             <div
                 class="flex flex-wrap items-center justify-between gap-4 w-full"
             >
-                <span class="text-sm text-surface-700 dark:text-surface-0">
+                <span class="text-sm text-muted-foreground">
                     {{
                         totalRecords
                             ? `${first}-${last} dari ${totalRecords}`
@@ -32,43 +32,31 @@
                     }}
                 </span>
                 <div class="flex items-center gap-1">
-                    <SecondaryButton
-                        text
-                        rounded
+                    <Button
+                        variant="secondary"
+                        size="icon"
                         @click="prevPageCallback"
                         :disabled="page === 0"
                     >
-                        <template #icon>
-                            <AngleLeftIcon />
-                        </template>
-                    </SecondaryButton>
-                    <SecondaryButton
-                        text
-                        rounded
+                        <AngleLeftIcon />
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        size="icon"
                         @click="nextPageCallback"
                         :disabled="page === pageCount! - 1"
                     >
-                        <template #icon>
-                            <AngleRightIcon />
-                        </template>
-                    </SecondaryButton>
+                        <AngleRightIcon />
+                    </Button>
                 </div>
                 <label class="flex items-center gap-2 text-sm text-surface-700 dark:text-surface-0">
-                    <select :value="rows"
+                    <Select
+                        :model-value="rows"
+                        :options="(props.rowsPerPageOptions ?? [rows]).map((option) => ({ value: option, label: `${option} per halaman` }))"
                         class="h-9 rounded-md border border-surface-300 bg-surface-0 px-2 text-sm dark:border-surface-700 dark:bg-surface-950"
-                        @change="
-                            (event) =>
-                                rowChangeCallback(
-                                    Number(
-                                        (event.target as HTMLSelectElement)
-                                            .value,
-                                    ),
-                                )
-                        ">
-                        <option v-for="option of props.rowsPerPageOptions ?? [rows]" :key="option" :value="option">
-                            {{ option }} per halaman
-                        </option>
-                    </select>
+                        @update:model-value="(value) => rowChangeCallback(Number(value))"
+                    >
+                    </Select>
                 </label>
             </div>
         </template>
@@ -91,7 +79,8 @@ import type {
     DataTableProps,
 } from 'primevue/datatable';
 import { ref } from 'vue';
-import SecondaryButton from './SecondaryButton.vue';
+import Button from '@/components/base/Button.vue';
+import Select from '@/components/base/Select.vue';
 import { ptViewMerge } from './utils';
 
 const props = defineProps<DataTableProps>();

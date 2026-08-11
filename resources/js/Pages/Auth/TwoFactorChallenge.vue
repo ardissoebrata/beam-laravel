@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
 import { computed, ref, watchEffect } from 'vue';
+import Button from '@/components/base/Button.vue';
+import Input from '@/components/base/Input.vue';
 import InputError from '@/components/form/InputError.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     InputOTP,
     InputOTPGroup,

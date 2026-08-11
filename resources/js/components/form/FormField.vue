@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue';
-import { Label } from '@/components/ui/label';
+import Label from '@/components/base/Label.vue';
 
 type Props = {
     id: string;

@@ -2,8 +2,8 @@
 import { Form } from '@inertiajs/vue3';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from '@lucide/vue';
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import Button from '@/components/base/Button.vue';
 import AlertError from '@/components/feedback/AlertError.vue';
-import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
