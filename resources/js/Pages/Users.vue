@@ -103,7 +103,7 @@ const deleteUser = () => {
 };
 
 const formatDate = (date: string) =>
-    new Intl.DateTimeFormat(undefined, {
+    new Intl.DateTimeFormat('id', {
         dateStyle: 'medium',
     }).format(new Date(date));
 
@@ -122,17 +122,11 @@ defineOptions({
 <template>
     <Head title="Users" />
 
-    <div class="flex flex-col gap-6 px-4 py-6">
-        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <Heading
-                title="Users"
-                description="Manage the users who can access this application"
-            />
-            <Button type="button" @click="openCreate">
-                <Plus class="size-4" />
-                Add user
-            </Button>
-        </div>
+    <div class="flex flex-col px-4 py-6">
+        <Heading
+            title="Users"
+            description="Manage the users who can access this application"
+        />
 
         <DataTable
             :rows="props.users.data"
@@ -143,6 +137,12 @@ defineOptions({
             empty-message="No users found."
             @row-click="handleRowClick"
         >
+            <template #header>
+                <Button type="button" @click="openCreate">
+                    <Plus class="size-4" />
+                    Add user
+                </Button>
+            </template>
             <template #body:name="{ data }">
                 <span class="font-base">{{ data.name }}</span>
             </template>

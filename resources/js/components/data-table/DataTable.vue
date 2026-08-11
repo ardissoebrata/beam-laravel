@@ -137,90 +137,95 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
-        <div v-if="searchable" class="flex justify-end">
-            <input
-                v-model="searchValue"
-                type="search"
-                :placeholder="searchPlaceholder"
-                class="h-9 w-full rounded-md border border-input bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:w-72"
-                @input="handleSearch"
-            />
-        </div>
+    <div class="overflow-x-auto rounded-lg border">
+        <VoltDataTable
+            :value="rows"
+            :data-key="dataKey"
+            :lazy="true"
+            :loading="loading"
+            paginator
+            :first="(pagination.current_page - 1) * pagination.per_page"
+            :rows="pagination.per_page"
+            :total-records="pagination.total"
+            :rows-per-page-options="perPageOptions"
+            :show-headers="true"
+            removable-sort
+            row-hover
+            striped-rows
+            scrollable
+            class="min-w-2xl text-sm"
+            @page="handlePage"
+            @sort="handleSort"
+            @row-click="handleRowClick"
+        >
+            <template v-if="$slots.header || searchable" #header>
+                <div class="flex items-center justify-between gap-4">
+                    <slot v-if="$slots.header" name="header" />
+                    <div v-else></div>
 
-        <div class="overflow-x-auto rounded-lg border">
-            <VoltDataTable
-                :value="rows"
-                :data-key="dataKey"
-                :lazy="true"
-                :loading="loading"
-                paginator
-                :first="(pagination.current_page - 1) * pagination.per_page"
-                :rows="pagination.per_page"
-                :total-records="pagination.total"
-                :rows-per-page-options="perPageOptions"
-                :show-headers="true"
-                removable-sort
-                row-hover
-                striped-rows
-                scrollable
-                class="min-w-2xl text-sm"
-                @page="handlePage"
-                @sort="handleSort"
-                @row-click="handleRowClick"
+                    <div v-if="searchable" class="ml-auto">
+                        <input
+                            v-model="searchValue"
+                            type="search"
+                            :placeholder="searchPlaceholder"
+                            class="h-9 w-full rounded-md border border-input bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:w-72"
+                            @input="handleSearch"
+                        />
+                    </div>
+                </div>
+            </template>
+
+            <PrimeColumn
+                v-for="column in columns"
+                :key="column.field"
+                :field="column.field"
+                :sortable="column.sortable"
+                :style="column.width ? { width: column.width } : undefined"
+                :header-style="{ textAlign: column.align ?? 'left' }"
+                :body-style="{ textAlign: column.align ?? 'left' }"
+                :pt="{
+                    columnHeaderContent: getHeaderAlignmentClass(column.align),
+                }"
+                :class="column.class"
             >
-                <template v-if="$slots.header" #header>
-                    <slot name="header" />
+                <template #header>
+                    <span class="font-medium">{{ column.header }}</span>
                 </template>
-
-                <PrimeColumn
-                    v-for="column in columns"
-                    :key="column.field"
-                    :field="column.field"
-                    :sortable="column.sortable"
-                    :style="column.width ? { width: column.width } : undefined"
-                    :header-style="{ textAlign: column.align ?? 'left' }"
-                    :body-style="{ textAlign: column.align ?? 'left' }"
-                    :pt="{
-                        columnHeaderContent: getHeaderAlignmentClass(column.align),
-                    }"
-                    :class="column.class"
-                >
-                    <template #header>
-                        <span class="font-medium">{{ column.header }}</span>
-                    </template>
-                    <template #body="slotProps">
-                        <slot
-                            :name="`body:${column.field}`"
-                            v-bind="slotProps"
-                        >
-                            {{ slotProps.data[column.field] }}
-                        </slot>
-                    </template>
-                </PrimeColumn>
-
-                <PrimeColumn v-if="$slots.actions" :style="'width: 50px;'">
-                    <template #body="slotProps">
-                        <slot name="actions" v-bind="slotProps" />
-                    </template>
-                </PrimeColumn>
-
-                <template #empty>
-                    <slot name="empty">
-                        <div class="p-8 text-center">
-                            <p class="font-medium">{{ emptyMessage }}</p>
-                        </div>
+                <template #body="slotProps">
+                    <slot
+                        :name="`body:${column.field}`"
+                        v-bind="slotProps"
+                    >
+                        {{ slotProps.data[column.field] }}
                     </slot>
                 </template>
+            </PrimeColumn>
 
-                <template #loading>
-                    <slot name="loading">
-                        <div class="p-8 text-center text-muted-foreground">
-                            Loading...
-                        </div>
-                    </slot>
+            <PrimeColumn v-if="$slots.actions" :style="'width: 50px;'">
+                <template #body="slotProps">
+                    <slot name="actions" v-bind="slotProps" />
                 </template>
-            </VoltDataTable>
-        </div>
+            </PrimeColumn>
+
+            <template #empty>
+                <slot name="empty">
+                    <div class="p-8 text-center">
+                        <p class="font-medium">{{ emptyMessage }}</p>
+                    </div>
+                </slot>
+            </template>
+
+            <template #loading>
+                <slot name="loading">
+                    <div class="p-8 text-center text-muted-foreground">
+                        Loading...
+                    </div>
+                </slot>
+            </template>
+
+            <template v-if="$slots.footer" #footer>
+                <slot name="footer" />
+            </template>
+        </VoltDataTable>
     </div>
 </template>
