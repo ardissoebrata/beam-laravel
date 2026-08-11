@@ -112,7 +112,7 @@
 
 /* PrimeVue is the source of truth for the shared color system. */
 :root {
-    --p-primary-50: oklch(0.962 0.018 272.314);
+    /* --p-primary-50: oklch(0.962 0.018 272.314);
     --p-primary-100: oklch(0.785 0.115 274.713);
     --p-primary-200: oklch(0.585 0.233 277.117);
     --p-primary-300: oklch(0.511 0.262 276.966);
@@ -122,7 +122,19 @@
     --p-primary-700: oklch(0.398 0.195 277.366);
     --p-primary-800: oklch(0.398 0.195 277.366);
     --p-primary-900: oklch(0.145 0 0);
-    --p-primary-950: oklch(0.145 0 0);
+    --p-primary-950: oklch(0.145 0 0); */
+
+    --p-primary-50:  oklch(0.98  0.10 277.023);
+    --p-primary-100: oklch(0.95  0.13 277.023);
+    --p-primary-200: oklch(0.90  0.16 277.023);
+    --p-primary-300: oklch(0.80  0.20 277.023);
+    --p-primary-400: oklch(0.457 0.24 277.023);
+    --p-primary-500: oklch(0.40  0.22 277.023);
+    --p-primary-600: oklch(0.33  0.20 277.023);
+    --p-primary-700: oklch(0.26  0.17 277.023);
+    --p-primary-800: oklch(0.19  0.14 277.023);
+    --p-primary-900: oklch(0.13  0.11 277.023);
+    --p-primary-950: oklch(0.09  0.09 277.023);
 
     --p-surface-0: oklch(1 0 0);
     --p-surface-50: oklch(0.97 0 0);
@@ -161,7 +173,7 @@
     --p-sidebar-foreground: var(--p-surface-700);
     --p-sidebar-primary: oklch(0.511 0.262 276.966);
     --p-sidebar-primary-foreground: var(--p-primary-50);
-    --p-sidebar-accent: var(--p-surface-50);
+    --p-sidebar-accent: var(--p-primary-50);
     --p-sidebar-accent-foreground: oklch(0.205 0 0);
     --p-sidebar-border: var(--p-surface-200);
     --p-sidebar-ring: var(--p-ring);
@@ -256,7 +268,7 @@
     --p-sidebar-foreground: var(--p-surface-0);
     --p-sidebar-primary: oklch(0.585 0.233 277.117);
     --p-sidebar-primary-foreground: var(--p-primary-50);
-    --p-sidebar-accent: var(--p-surface-800);
+    --p-sidebar-accent: var(--p-primary-900);
     --p-sidebar-accent-foreground: var(--p-surface-0);
     --p-sidebar-border: oklch(1 0 0 / 10%);
     --p-sidebar: var(--p-surface-900);
