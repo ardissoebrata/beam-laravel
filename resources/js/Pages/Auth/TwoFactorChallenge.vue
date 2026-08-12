@@ -3,7 +3,7 @@ import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
 import { computed, ref, watchEffect } from 'vue';
 import Button from '@/components/base/Button.vue';
 import Input from '@/components/base/Input.vue';
-import InputError from '@/components/form/InputError.vue';
+import InputError from '@/components/base/InputError.vue';
 import {
     InputOTP,
     InputOTPGroup,

@@ -163,7 +163,7 @@
     --p-accent-foreground: oklch(0.205 0 0);
     --p-destructive: oklch(0.577 0.245 27.325);
     --p-destructive-foreground: hsl(0 0% 98%);
-    --p-ring: oklch(0.708 0 0);
+    --p-ring: var(--p-primary-200);
     --p-chart-1: oklch(0.785 0.115 274.713);
     --p-chart-2: oklch(0.585 0.233 277.117);
     --p-chart-3: oklch(0.511 0.262 276.966);
@@ -263,7 +263,7 @@
     --p-text-hover-color: var(--p-surface-0);
     --p-text-muted-color: oklch(0.708 0 0);
     --p-text-hover-muted-color: oklch(0.708 0 0);
-    --p-ring: oklch(0.556 0 0);
+    --p-ring: var(--p-primary-200);
     --p-sidebar-background: hsl(0 0% 7%);
     --p-sidebar-foreground: var(--p-surface-0);
     --p-sidebar-primary: oklch(0.585 0.233 277.117);

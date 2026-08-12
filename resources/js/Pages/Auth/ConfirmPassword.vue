@@ -2,8 +2,8 @@
 import { Form, Head } from '@inertiajs/vue3';
 import Button from '@/components/base/Button.vue';
 import Label from '@/components/base/Label.vue';
-import InputError from '@/components/form/InputError.vue';
-import PasswordInput from '@/components/form/PasswordInput.vue';
+import InputError from '@/components/base/InputError.vue';
+import PasswordInput from '@/components/base/PasswordInput.vue';
 import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/password/confirm';
 

@@ -13,8 +13,8 @@ import type {
     DataTablePagination,
     DataTableRowClickEvent,
 } from '@/components/data-table';
-import InputError from '@/components/form/InputError.vue';
-import PasswordInput from '@/components/form/PasswordInput.vue';
+import InputError from '@/components/base/InputError.vue';
+import PasswordInput from '@/components/base/PasswordInput.vue';
 import {
     Dialog,
     DialogClose,

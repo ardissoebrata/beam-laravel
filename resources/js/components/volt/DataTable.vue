@@ -53,7 +53,7 @@
                     <Select
                         :model-value="rows"
                         :options="(props.rowsPerPageOptions ?? [rows]).map((option) => ({ value: option, label: `${option} per halaman` }))"
-                        class="h-9 rounded-md border border-surface-300 bg-surface-0 px-2 text-sm dark:border-surface-700 dark:bg-surface-950"
+                        class="h-9 rounded-md border border-surface-300 bg-surface-0 px-2 text-sm dark:border-surface-700 dark:bg-surface-950 text-surface-400 dark:text-surface-400"
                         @update:model-value="(value) => rowChangeCallback(Number(value))"
                     >
                     </Select>

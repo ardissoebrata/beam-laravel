@@ -4,7 +4,7 @@ import Button from '@/components/base/Button.vue';
 import Input from '@/components/base/Input.vue';
 import Label from '@/components/base/Label.vue';
 import TextLink from '@/components/base/TextLink.vue';
-import InputError from '@/components/form/InputError.vue';
+import InputError from '@/components/base/InputError.vue';
 import { Spinner } from '@/components/ui/spinner';
 import { forgotPassword } from '@/lib/authRoutes';
 import { login } from '@/routes';

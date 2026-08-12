@@ -5,7 +5,7 @@ import { useClipboard } from '@vueuse/core';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
 import Button from '@/components/base/Button.vue';
 import AlertError from '@/components/feedback/AlertError.vue';
-import InputError from '@/components/form/InputError.vue';
+import InputError from '@/components/base/InputError.vue';
 import {
     Dialog,
     DialogContent,
