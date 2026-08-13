@@ -12,6 +12,8 @@ export type User = {
 
 export type Auth = {
     user: User;
+    roles: string[];
+    permissions: string[];
     features: {
         registration: boolean;
         resetPasswords: boolean;

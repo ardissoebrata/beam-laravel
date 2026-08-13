@@ -7,12 +7,13 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Role;
 
 class UserUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user() !== null;
+        return $this->user()?->can('users.manage') ?? false;
     }
 
     /**
@@ -32,6 +33,7 @@ class UserUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class, 'email')->ignore($this->route('user')),
             ],
+            'role' => ['required', 'string', Rule::exists(Role::class, 'name')->where('guard_name', 'web')],
             'password' => ['nullable', 'confirmed', Password::defaults()],
         ];
     }

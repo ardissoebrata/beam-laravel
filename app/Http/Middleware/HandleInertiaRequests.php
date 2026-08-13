@@ -43,6 +43,8 @@ class HandleInertiaRequests extends Middleware
             'translations' => __('frontend'),
             'auth' => [
                 'user' => $request->user(),
+                'roles' => $request->user()?->getRoleNames()->values() ?? [],
+                'permissions' => $request->user()?->getAllPermissions()->pluck('name')->values() ?? [],
                 'features' => [
                     'registration' => Features::enabled(Features::registration()),
                     'resetPasswords' => Features::enabled(Features::resetPasswords()),

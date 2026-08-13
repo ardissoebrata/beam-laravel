@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -27,6 +28,7 @@ class UserController extends Controller
         $sortOrder = $validated['sort_order'] ?? 'desc';
 
         $users = User::query()
+            ->with('roles:id,name')
             ->select(['id', 'name', 'email', 'created_at'])
             ->when($validated['search'] ?? null, function ($query, string $search): void {
                 $query->where(function ($query) use ($search): void {
@@ -38,8 +40,20 @@ class UserController extends Controller
             ->paginate($validated['per_page'] ?? 10)
             ->withQueryString();
 
+        $users->through(fn (User $user): array => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->getRoleNames()->first(),
+            'created_at' => $user->created_at,
+        ]);
+
         return Inertia::render('Users', [
             'users' => $users,
+            'roles' => Role::query()
+                ->where('guard_name', 'web')
+                ->orderBy('name')
+                ->pluck('name'),
             'filters' => [
                 'search' => $validated['search'] ?? '',
             ],
@@ -48,7 +62,11 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        User::create($request->validated());
+        $validated = $request->validated();
+        $role = $validated['role'];
+        unset($validated['role']);
+
+        User::create($validated)->assignRole($role);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('User created.')]);
 
@@ -58,12 +76,15 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
+        $role = $validated['role'];
+        unset($validated['role']);
 
         if (! filled($validated['password'] ?? null)) {
             unset($validated['password']);
         }
 
         $user->update($validated);
+        $user->syncRoles([$role]);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('User updated.')]);
 

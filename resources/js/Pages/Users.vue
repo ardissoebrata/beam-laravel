@@ -9,6 +9,7 @@ import FormField from '@/components/base/FormField.vue';
 import Heading from '@/components/base/Heading.vue';
 import Input from '@/components/base/Input.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
+import Select from '@/components/base/Select.vue';
 import { DataTable } from '@/components/data-table';
 import type {
     DataTableColumn,
@@ -22,6 +23,7 @@ interface User {
     id: number;
     name: string;
     email: string;
+    role: string | null;
     created_at: string;
 }
 
@@ -31,6 +33,7 @@ interface UserPagination extends DataTablePagination {
 
 const props = defineProps<{
     users: UserPagination;
+    roles: string[];
     filters?: {
         search?: string;
     };
@@ -41,6 +44,7 @@ const { t } = useTranslations();
 const columns: DataTableColumn[] = [
     { field: 'name', header: t('users.name'), sortable: true },
     { field: 'email', header: t('users.email'), sortable: true },
+    { field: 'role', header: t('users.role'), sortable: true },
     {
         field: 'created_at',
         header: t('users.created'),
@@ -55,14 +59,20 @@ const currentUserId = computed(() => page.props.auth.user.id);
 const formOpen = ref(false);
 const deleteOpen = ref(false);
 const selectedUser = ref<User | null>(null);
+const formRole = ref('User');
+const roleOptions = computed(() =>
+    props.roles.map((role) => ({ value: role, label: role })),
+);
 
 const openCreate = () => {
     selectedUser.value = null;
+    formRole.value = 'User';
     formOpen.value = true;
 };
 
 const openEdit = (user: User) => {
     selectedUser.value = user;
+    formRole.value = user.role ?? 'User';
     formOpen.value = true;
 };
 
@@ -152,6 +162,9 @@ defineOptions({
             <template #body:email="{ data }">
                 <span class="text-muted-foreground">{{ data.email }}</span>
             </template>
+            <template #body:role="{ data }">
+                <span class="text-muted-foreground">{{ data.role ?? '-' }}</span>
+            </template>
             <template #body:created_at="{ data }">
                 <span class="text-muted-foreground">{{
                     formatDate(data.created_at)
@@ -226,6 +239,12 @@ defineOptions({
                             @input="invalid('email') && validate('email')"
                             v-bind="field"
                         />
+                    </template>
+                </FormField>
+                <FormField id="edit-role" :label="t('users.role')" :error="errors.role" required>
+                    <template #default="field">
+                        <input type="hidden" name="role" :value="formRole" />
+                        <Select v-model="formRole" :options="roleOptions" v-bind="field" />
                     </template>
                 </FormField>
                 <FormField
@@ -310,6 +329,12 @@ defineOptions({
                             @input="invalid('email') && validate('email')"
                             v-bind="field"
                         />
+                    </template>
+                </FormField>
+                <FormField id="role" :label="t('users.role')" :error="errors.role" required>
+                    <template #default="field">
+                        <input type="hidden" name="role" :value="formRole" />
+                        <Select v-model="formRole" :options="roleOptions" v-bind="field" />
                     </template>
                 </FormField>
                 <FormField

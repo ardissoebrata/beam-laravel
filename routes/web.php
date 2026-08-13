@@ -10,7 +10,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'permission:users.manage'])->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::post('users', [UserController::class, 'store'])
         ->middleware(HandlePrecognitiveRequests::class)

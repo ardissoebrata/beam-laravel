@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { ChevronRight, FolderKanban } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import {
@@ -20,6 +20,7 @@ const props = defineProps<{
 }>();
 
 const { isCurrentUrl, isCurrentOrParentUrl } = useCurrentUrl();
+const page = usePage();
 const openNodes = ref<Record<string, boolean>>({});
 
 const containsActiveNode = (node: NavigationNode): boolean => {
@@ -49,7 +50,13 @@ const isActive = (node: NavigationNode) =>
 
 const isParentActive = (node: NavigationNode) => containsActiveNode(node);
 
-const menuItems = computed(() => props.nodes);
+const menuItems = computed(() =>
+    props.nodes.filter(
+        (node) =>
+            !node.permission ||
+            page.props.auth.permissions.includes(node.permission),
+    ),
+);
 </script>
 
 <template>

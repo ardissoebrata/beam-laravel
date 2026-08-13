@@ -76,6 +76,7 @@ return [
         'description' => 'Kelola pengguna yang dapat mengakses aplikasi ini',
         'name' => 'Nama',
         'email' => 'Email',
+        'role' => 'Peran',
         'created' => 'Dibuat',
         'add' => 'Tambah pengguna',
         'edit' => 'Edit pengguna',

@@ -29,6 +29,7 @@ export const treeNavGroups: NavigationGroup[] = [
                 title: 'Pengguna',
                 href: usersIndex().url,
                 icon: Users,
+                permission: 'users.manage',
             },
             // {
             //     title: 'Data library',
