@@ -5,10 +5,9 @@ import { computed, ref } from 'vue';
 import UserController from '@/actions/App/Http/Controllers/UserController';
 import Button from '@/components/base/Button.vue';
 import Dialog from '@/components/base/Dialog.vue';
+import FormField from '@/components/base/FormField.vue';
 import Heading from '@/components/base/Heading.vue';
 import Input from '@/components/base/Input.vue';
-import InputError from '@/components/base/InputError.vue';
-import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
 import { DataTable } from '@/components/data-table';
 import type {
@@ -187,57 +186,85 @@ defineOptions({
             <Form
                 v-if="selectedUser"
                 v-bind="UserController.update.form(selectedUser.id)"
-                class="space-y-4"
+                class="space-y-6"
                 @success="closeForm"
-                v-slot="{ errors, processing }"
+                v-slot="{ errors, processing, validate, invalid, validating }"
             >
-                <div class="grid gap-2">
-                    <Label for="edit-name">Name</Label>
-                    <Input
-                        id="edit-name"
-                        name="name"
-                        :default-value="selectedUser.name"
-                        required
-                    />
-                    <InputError :message="errors.name" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="edit-email">Email</Label>
-                    <Input
-                        id="edit-email"
-                        name="email"
-                        type="email"
-                        :default-value="selectedUser.email"
-                        required
-                    />
-                    <InputError :message="errors.email" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="edit-password">New password</Label>
-                    <PasswordInput
-                        id="edit-password"
-                        name="password"
-                        autocomplete="new-password"
-                    />
-                    <InputError :message="errors.password" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="edit-password-confirmation"
-                        >Confirm new password</Label
-                    >
-                    <PasswordInput
-                        id="edit-password-confirmation"
-                        name="password_confirmation"
-                        autocomplete="new-password"
-                    />
-                </div>
+                <FormField
+                    id="edit-name"
+                    label="Name"
+                    :error="errors.name"
+                    required
+                >
+                    <template #default="field">
+                        <Input
+                            name="name"
+                            :default-value="selectedUser.name"
+                            required
+                            @blur="validate('name')"
+                            @input="invalid('name') && validate('name')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="edit-email"
+                    label="Email"
+                    :error="errors.email"
+                    required
+                >
+                    <template #default="field">
+                        <Input
+                            name="email"
+                            type="email"
+                            :default-value="selectedUser.email"
+                            required
+                            @blur="validate('email')"
+                            @input="invalid('email') && validate('email')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="edit-password"
+                    label="New password"
+                    :error="errors.password"
+                >
+                    <template #default="field">
+                        <PasswordInput
+                            name="password"
+                            autocomplete="new-password"
+                            @blur="validate('password')"
+                            @input="invalid('password') && validate('password')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="edit-password-confirmation"
+                    label="Confirm new password"
+                    :error="errors.password_confirmation"
+                >
+                    <template #default="field">
+                        <PasswordInput
+                            name="password_confirmation"
+                            autocomplete="new-password"
+                            @blur="validate('password_confirmation')"
+                            @input="
+                                invalid('password_confirmation') &&
+                                validate('password_confirmation')
+                            "
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
                 <div
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
                     <Button type="button" variant="secondary" @click="close"
                         >Cancel</Button
                     >
-                    <Button type="submit" :disabled="processing"
+                    <Button type="submit" :disabled="processing || validating"
                         >Save changes</Button
                     >
                 </div>
@@ -246,47 +273,84 @@ defineOptions({
             <Form
                 v-else
                 v-bind="UserController.store.form()"
-                class="space-y-4"
+                class="space-y-6"
                 reset-on-success
                 @success="closeForm"
-                v-slot="{ errors, processing }"
+                v-slot="{ errors, processing, validate, invalid, validating }"
             >
-                <div class="grid gap-2">
-                    <Label for="name">Name</Label>
-                    <Input id="name" name="name" required />
-                    <InputError :message="errors.name" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="email">Email</Label>
-                    <Input id="email" name="email" type="email" required />
-                    <InputError :message="errors.email" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="password">Password</Label>
-                    <PasswordInput
-                        id="password"
-                        name="password"
-                        autocomplete="new-password"
-                        required
-                    />
-                    <InputError :message="errors.password" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="password-confirmation">Confirm password</Label>
-                    <PasswordInput
-                        id="password-confirmation"
-                        name="password_confirmation"
-                        autocomplete="new-password"
-                        required
-                    />
-                </div>
+                <FormField
+                    id="name"
+                    label="Name"
+                    :error="errors.name"
+                    required
+                >
+                    <template #default="field">
+                        <Input
+                            name="name"
+                            @blur="validate('name')"
+                            @input="invalid('name') && validate('name')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="email"
+                    label="Email"
+                    :error="errors.email"
+                    required
+                >
+                    <template #default="field">
+                        <Input
+                            name="email"
+                            type="email"
+                            @blur="validate('email')"
+                            @input="invalid('email') && validate('email')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="password"
+                    label="Password"
+                    :error="errors.password"
+                    required
+                >
+                    <template #default="field">
+                        <PasswordInput
+                            name="password"
+                            autocomplete="new-password"
+                            @blur="validate('password')"
+                            @input="invalid('password') && validate('password')"
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
+                <FormField
+                    id="password-confirmation"
+                    label="Confirm password"
+                    :error="errors.password_confirmation"
+                    required
+                >
+                    <template #default="field">
+                        <PasswordInput
+                            name="password_confirmation"
+                            autocomplete="new-password"
+                            @blur="validate('password_confirmation')"
+                            @input="
+                                invalid('password_confirmation') &&
+                                validate('password_confirmation')
+                            "
+                            v-bind="field"
+                        />
+                    </template>
+                </FormField>
                 <div
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
                     <Button type="button" variant="secondary" @click="close"
                         >Cancel</Button
                     >
-                    <Button type="submit" :disabled="processing"
+                    <Button type="submit" :disabled="processing || validating"
                         >Add user</Button
                     >
                 </div>

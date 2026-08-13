@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue';
+import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
 
 type Props = {
@@ -38,7 +39,7 @@ const describedBy = computed(() => {
     <div class="grid gap-2">
         <Label :for="id">
             {{ label }}
-            <span v-if="required" aria-hidden="true">*</span>
+            <span v-if="required" class="text-destructive" aria-hidden="true">*</span>
         </Label>
 
         <slot
@@ -51,12 +52,6 @@ const describedBy = computed(() => {
             {{ hint }}
         </p>
 
-        <p
-            v-if="error"
-            :id="errorId"
-            class="text-sm text-red-600 dark:text-red-500"
-        >
-            {{ error }}
-        </p>
+        <InputError :id="errorId" :message="error" />
     </div>
 </template>

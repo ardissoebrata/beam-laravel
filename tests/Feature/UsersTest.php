@@ -46,6 +46,72 @@ test('users table query parameters are validated', function () {
         ->assertSessionHasErrors('sort_field');
 });
 
+test('user creation can be validated with precognition without creating a user', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->withPrecognition()
+        ->post(route('users.store'), [
+            'name' => 'New User',
+            'email' => 'new@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+    $response->assertSuccessfulPrecognition();
+    expect(User::count())->toBe(1);
+});
+
+test('user creation precognition returns validation errors', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->withPrecognition()
+        ->post(route('users.store'), [
+            'name' => '',
+            'email' => 'not-an-email',
+            'password' => 'short',
+            'password_confirmation' => 'different',
+        ]);
+
+    $response->assertSessionHasErrors([
+        'name',
+        'email',
+        'password',
+    ]);
+    expect(User::count())->toBe(1);
+});
+
+test('user update can be validated with precognition without updating a user', function () {
+    $user = User::factory()->create();
+    $managedUser = User::factory()->create(['name' => 'Original User']);
+
+    $response = $this->actingAs($user)
+        ->withPrecognition()
+        ->patch(route('users.update', $managedUser), [
+            'name' => 'Updated User',
+            'email' => $managedUser->email,
+        ]);
+
+    $response->assertSuccessfulPrecognition();
+    expect($managedUser->refresh()->name)->toBe('Original User');
+});
+
+test('user update precognition returns validation errors', function () {
+    $user = User::factory()->create();
+    $managedUser = User::factory()->create(['name' => 'Original User']);
+
+    $response = $this->actingAs($user)
+        ->withPrecognition()
+        ->patch(route('users.update', $managedUser), [
+            'name' => '',
+            'email' => 'not-an-email',
+        ]);
+
+    $response->assertSessionHasErrors(['name', 'email']);
+    expect($managedUser->refresh()->name)->toBe('Original User');
+});
+
 test('user can be created', function () {
     $user = User::factory()->create();
 
