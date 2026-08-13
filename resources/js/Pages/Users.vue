@@ -4,26 +4,18 @@ import { Plus, X } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import UserController from '@/actions/App/Http/Controllers/UserController';
 import Button from '@/components/base/Button.vue';
+import Dialog from '@/components/base/Dialog.vue';
 import Heading from '@/components/base/Heading.vue';
 import Input from '@/components/base/Input.vue';
+import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
+import PasswordInput from '@/components/base/PasswordInput.vue';
 import { DataTable } from '@/components/data-table';
 import type {
     DataTableColumn,
     DataTablePagination,
     DataTableRowClickEvent,
 } from '@/components/data-table';
-import InputError from '@/components/base/InputError.vue';
-import PasswordInput from '@/components/base/PasswordInput.vue';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { index as usersIndex } from '@/routes/users';
 
 interface User {
@@ -47,7 +39,13 @@ const props = defineProps<{
 const columns: DataTableColumn[] = [
     { field: 'name', header: 'Name', sortable: true },
     { field: 'email', header: 'Email', sortable: true },
-    { field: 'created_at', header: 'Created', sortable: true, width: '100px', align: 'right' },
+    {
+        field: 'created_at',
+        header: 'Created',
+        sortable: true,
+        width: '100px',
+        align: 'right',
+    },
 ];
 
 const page = usePage();
@@ -69,7 +67,10 @@ const openEdit = (user: User) => {
 const handleRowClick = (event: DataTableRowClickEvent<User>) => {
     const target = event.originalEvent.target;
 
-    if (target instanceof Element && target.closest('button, a, input, [role="button"]')) {
+    if (
+        target instanceof Element &&
+        target.closest('button, a, input, [role="button"]')
+    ) {
         return;
     }
 
@@ -150,7 +151,9 @@ defineOptions({
                 <span class="text-muted-foreground">{{ data.email }}</span>
             </template>
             <template #body:created_at="{ data }">
-                <span class="text-muted-foreground">{{ formatDate(data.created_at) }}</span>
+                <span class="text-muted-foreground">{{
+                    formatDate(data.created_at)
+                }}</span>
             </template>
             <template #actions="{ data }">
                 <div class="flex justify-end gap-1">
@@ -171,15 +174,16 @@ defineOptions({
         </DataTable>
     </div>
 
-    <Dialog v-model:open="formOpen">
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>{{ selectedUser ? 'Edit user' : 'Add user' }}</DialogTitle>
-                <DialogDescription>
-                    {{ selectedUser ? 'Update this user account.' : 'Create a user account with a secure password.' }}
-                </DialogDescription>
-            </DialogHeader>
-
+    <Dialog
+        v-model:open="formOpen"
+        :title="selectedUser ? 'Edit user' : 'Add user'"
+        :description="
+            selectedUser
+                ? 'Update this user account.'
+                : 'Create a user account with a secure password.'
+        "
+    >
+        <template #default="{ close }">
             <Form
                 v-if="selectedUser"
                 v-bind="UserController.update.form(selectedUser.id)"
@@ -189,29 +193,54 @@ defineOptions({
             >
                 <div class="grid gap-2">
                     <Label for="edit-name">Name</Label>
-                    <Input id="edit-name" name="name" :default-value="selectedUser.name" required />
+                    <Input
+                        id="edit-name"
+                        name="name"
+                        :default-value="selectedUser.name"
+                        required
+                    />
                     <InputError :message="errors.name" />
                 </div>
                 <div class="grid gap-2">
                     <Label for="edit-email">Email</Label>
-                    <Input id="edit-email" name="email" type="email" :default-value="selectedUser.email" required />
+                    <Input
+                        id="edit-email"
+                        name="email"
+                        type="email"
+                        :default-value="selectedUser.email"
+                        required
+                    />
                     <InputError :message="errors.email" />
                 </div>
                 <div class="grid gap-2">
                     <Label for="edit-password">New password</Label>
-                    <PasswordInput id="edit-password" name="password" autocomplete="new-password" />
+                    <PasswordInput
+                        id="edit-password"
+                        name="password"
+                        autocomplete="new-password"
+                    />
                     <InputError :message="errors.password" />
                 </div>
                 <div class="grid gap-2">
-                    <Label for="edit-password-confirmation">Confirm new password</Label>
-                    <PasswordInput id="edit-password-confirmation" name="password_confirmation" autocomplete="new-password" />
+                    <Label for="edit-password-confirmation"
+                        >Confirm new password</Label
+                    >
+                    <PasswordInput
+                        id="edit-password-confirmation"
+                        name="password_confirmation"
+                        autocomplete="new-password"
+                    />
                 </div>
-                <DialogFooter>
-                    <DialogClose as-child>
-                        <Button type="button" variant="secondary">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit" :disabled="processing">Save changes</Button>
-                </DialogFooter>
+                <div
+                    class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+                >
+                    <Button type="button" variant="secondary" @click="close"
+                        >Cancel</Button
+                    >
+                    <Button type="submit" :disabled="processing"
+                        >Save changes</Button
+                    >
+                </div>
             </Form>
 
             <Form
@@ -234,37 +263,51 @@ defineOptions({
                 </div>
                 <div class="grid gap-2">
                     <Label for="password">Password</Label>
-                    <PasswordInput id="password" name="password" autocomplete="new-password" required />
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        autocomplete="new-password"
+                        required
+                    />
                     <InputError :message="errors.password" />
                 </div>
                 <div class="grid gap-2">
                     <Label for="password-confirmation">Confirm password</Label>
-                    <PasswordInput id="password-confirmation" name="password_confirmation" autocomplete="new-password" required />
+                    <PasswordInput
+                        id="password-confirmation"
+                        name="password_confirmation"
+                        autocomplete="new-password"
+                        required
+                    />
                 </div>
-                <DialogFooter>
-                    <DialogClose as-child>
-                        <Button type="button" variant="secondary">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit" :disabled="processing">Add user</Button>
-                </DialogFooter>
+                <div
+                    class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+                >
+                    <Button type="button" variant="secondary" @click="close"
+                        >Cancel</Button
+                    >
+                    <Button type="submit" :disabled="processing"
+                        >Add user</Button
+                    >
+                </div>
             </Form>
-        </DialogContent>
+        </template>
     </Dialog>
 
-    <Dialog v-model:open="deleteOpen">
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Delete user?</DialogTitle>
-                <DialogDescription>
-                    This permanently removes {{ selectedUser?.name }} and cannot be undone.
-                </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-                <DialogClose as-child>
-                    <Button type="button" variant="secondary">Cancel</Button>
-                </DialogClose>
-                <Button type="button" variant="destructive" @click="deleteUser">Delete user</Button>
-            </DialogFooter>
-        </DialogContent>
+    <Dialog
+        v-model:open="deleteOpen"
+        title="Delete user?"
+        :description="`This permanently removes ${selectedUser?.name} and cannot be undone.`"
+    >
+        <template #default="{ close }">
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <Button type="button" variant="secondary" @click="close"
+                    >Cancel</Button
+                >
+                <Button type="button" variant="destructive" @click="deleteUser"
+                    >Delete user</Button
+                >
+            </div>
+        </template>
     </Dialog>
 </template>

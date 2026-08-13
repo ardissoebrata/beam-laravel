@@ -5,8 +5,8 @@ import type { Props as ManageTwoFactorProps } from '@/components/auth/ManageTwoF
 import ManageTwoFactor from '@/components/auth/ManageTwoFactor.vue';
 import Button from '@/components/base/Button.vue';
 import Heading from '@/components/base/Heading.vue';
-import Label from '@/components/base/Label.vue';
 import InputError from '@/components/base/InputError.vue';
+import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
 import { edit } from '@/routes/security';
 

@@ -3,21 +3,11 @@ import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Button from '@/components/base/Button.vue';
+import Dialog from '@/components/base/Dialog.vue';
 import Heading from '@/components/base/Heading.vue';
-import Label from '@/components/base/Label.vue';
 import InputError from '@/components/base/InputError.vue';
+import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-
 const passwordInput = useTemplateRef('passwordInput');
 </script>
 
@@ -37,13 +27,16 @@ const passwordInput = useTemplateRef('passwordInput');
                     Please proceed with caution, this cannot be undone.
                 </p>
             </div>
-            <Dialog>
-                <DialogTrigger as-child>
+            <Dialog
+                title="Are you sure you want to delete your account?"
+                description="Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account."
+            >
+                <template #trigger>
                     <Button variant="destructive" data-test="delete-user-button"
                         >Delete account</Button
                     >
-                </DialogTrigger>
-                <DialogContent>
+                </template>
+                <template #default="{ close }">
                     <Form
                         v-bind="ProfileController.destroy.form()"
                         reset-on-success
@@ -54,20 +47,6 @@ const passwordInput = useTemplateRef('passwordInput');
                         class="space-y-6"
                         v-slot="{ errors, processing, reset, clearErrors }"
                     >
-                        <DialogHeader class="space-y-3">
-                            <DialogTitle
-                                >Are you sure you want to delete your
-                                account?</DialogTitle
-                            >
-                            <DialogDescription>
-                                Once your account is deleted, all of its
-                                resources and data will also be permanently
-                                deleted. Please enter your password to confirm
-                                you would like to permanently delete your
-                                account.
-                            </DialogDescription>
-                        </DialogHeader>
-
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only"
                                 >Password</Label
@@ -81,20 +60,21 @@ const passwordInput = useTemplateRef('passwordInput');
                             <InputError :message="errors.password" />
                         </div>
 
-                        <DialogFooter class="gap-2">
-                            <DialogClose as-child>
-                                <Button
-                                    variant="secondary"
-                                    @click="
-                                        () => {
-                                            clearErrors();
-                                            reset();
-                                        }
-                                    "
-                                >
-                                    Cancel
-                                </Button>
-                            </DialogClose>
+                        <div
+                            class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+                        >
+                            <Button
+                                variant="secondary"
+                                @click="
+                                    () => {
+                                        clearErrors();
+                                        reset();
+                                        close();
+                                    }
+                                "
+                            >
+                                Cancel
+                            </Button>
 
                             <Button
                                 type="submit"
@@ -104,9 +84,9 @@ const passwordInput = useTemplateRef('passwordInput');
                             >
                                 Delete account
                             </Button>
-                        </DialogFooter>
+                        </div>
                     </Form>
-                </DialogContent>
+                </template>
             </Dialog>
         </div>
     </div>

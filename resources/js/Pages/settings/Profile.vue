@@ -6,8 +6,8 @@ import DeleteUser from '@/components/auth/DeleteUser.vue';
 import Button from '@/components/base/Button.vue';
 import Heading from '@/components/base/Heading.vue';
 import Input from '@/components/base/Input.vue';
-import Label from '@/components/base/Label.vue';
 import InputError from '@/components/base/InputError.vue';
+import Label from '@/components/base/Label.vue';
 import { edit } from '@/routes/profile';
 
 defineOptions({

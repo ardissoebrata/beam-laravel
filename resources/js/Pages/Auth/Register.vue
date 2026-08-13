@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
 import Button from '@/components/base/Button.vue';
-import Input from '@/components/base/Input.vue';
-import TextLink from '@/components/base/TextLink.vue';
 import FormField from '@/components/base/FormField.vue';
+import Input from '@/components/base/Input.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
+import TextLink from '@/components/base/TextLink.vue';
 import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/lib/authRoutes';
 import { login } from '@/routes';

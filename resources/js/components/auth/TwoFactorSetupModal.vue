@@ -4,15 +4,9 @@ import { Check, Copy, ScanLine } from '@lucide/vue';
 import { useClipboard } from '@vueuse/core';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
 import Button from '@/components/base/Button.vue';
-import AlertError from '@/components/feedback/AlertError.vue';
+import Dialog from '@/components/base/Dialog.vue';
 import InputError from '@/components/base/InputError.vue';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
+import AlertError from '@/components/feedback/AlertError.vue';
 import {
     InputOTP,
     InputOTPGroup,
@@ -110,9 +104,11 @@ watch(
 </script>
 
 <template>
-    <Dialog :open="isOpen" @update:open="isOpen = $event">
-        <DialogContent class="sm:max-w-md">
-            <DialogHeader class="flex items-center justify-center">
+    <Dialog v-model:open="isOpen" class="sm:max-w-md">
+        <template #header>
+            <div
+                class="flex flex-col items-center justify-center gap-2 text-center sm:text-left"
+            >
                 <div
                     class="mb-3 w-auto rounded-full border border-border bg-card p-0.5 shadow-sm"
                 >
@@ -142,12 +138,12 @@ watch(
                         />
                     </div>
                 </div>
-                <DialogTitle>{{ modalConfig.title }}</DialogTitle>
-                <DialogDescription class="text-center">
-                    {{ modalConfig.description }}
-                </DialogDescription>
-            </DialogHeader>
+            </div>
+        </template>
+        <template #title>{{ modalConfig.title }}</template>
+        <template #description>{{ modalConfig.description }}</template>
 
+        <template #default>
             <div
                 class="relative flex w-auto flex-col items-center justify-center space-y-5"
             >
@@ -293,6 +289,6 @@ watch(
                     </Form>
                 </template>
             </div>
-        </DialogContent>
+        </template>
     </Dialog>
 </template>
