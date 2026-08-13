@@ -3,6 +3,7 @@ import { router } from '@inertiajs/vue3';
 import PrimeColumn from 'primevue/column';
 import { onBeforeUnmount, ref, watch } from 'vue';
 import VoltDataTable from '@/components/volt/DataTable.vue';
+import { useTranslations } from '@/composables/useTranslations';
 import type {
     DataTableColumn,
     DataTablePagination,
@@ -36,14 +37,16 @@ const emit = defineEmits<{
     'row-click': [event: DataTableRowClickEvent<TRow>];
 }>();
 
+const { t } = useTranslations();
+
 const props = withDefaults(defineProps<Props>(), {
     dataKey: 'id',
     loading: false,
     searchable: true,
     search: '',
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: 'Cari...',
     perPageOptions: () => [10, 25, 50],
-    emptyMessage: 'No records found.',
+    emptyMessage: 'Tidak ada data ditemukan.',
 });
 
 const searchValue = ref(props.search);
@@ -217,7 +220,7 @@ onBeforeUnmount(() => {
             <template #loading>
                 <slot name="loading">
                     <div class="p-8 text-center text-muted-foreground">
-                        Loading...
+                        {{ t('common.loading') }}
                     </div>
                 </slot>
             </template>

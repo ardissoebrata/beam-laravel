@@ -5,19 +5,21 @@ import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/composables/useTranslations';
 import { store } from '@/routes/password/confirm';
+
+const { t } = useTranslations();
 
 defineOptions({
     layout: {
-        title: 'Confirm password',
-        description:
-            'This is a secure area of the application. Please confirm your password before continuing.',
+        title: 'Konfirmasi kata sandi',
+        description: 'Ini adalah area aman aplikasi. Konfirmasikan kata sandi Anda sebelum melanjutkan.',
     },
 });
 </script>
 
 <template>
-    <Head title="Confirm password" />
+    <Head :title="t('auth.confirmTitle')" />
 
     <Form
         v-bind="store.form()"
@@ -26,7 +28,7 @@ defineOptions({
     >
         <div class="space-y-6">
             <div class="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{{ t('auth.password') }}</Label>
                 <PasswordInput
                     id="password"
                     name="password"
@@ -46,7 +48,7 @@ defineOptions({
                     data-test="confirm-password-button"
                 >
                     <Spinner v-if="processing" />
-                    Confirm password
+                    {{ t('auth.confirmPassword') }}
                 </Button>
             </div>
         </div>

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '@/components/base/PlaceholderPattern.vue';
+import { useTranslations } from '@/composables/useTranslations';
 import { dashboard } from '@/routes';
+
+const { t } = useTranslations();
 
 defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Dashboard',
+                title: 'Dasbor',
                 href: dashboard(),
             },
         ],
@@ -16,7 +19,7 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head :title="t('pages.dashboard')" />
 
     <div
         class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"

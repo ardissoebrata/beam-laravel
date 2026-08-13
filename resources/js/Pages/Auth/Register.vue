@@ -6,8 +6,11 @@ import Input from '@/components/base/Input.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
 import TextLink from '@/components/base/TextLink.vue';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/composables/useTranslations';
 import { register } from '@/lib/authRoutes';
 import { login } from '@/routes';
+
+const { t } = useTranslations();
 
 defineProps<{
     passwordRules: string;
@@ -15,14 +18,14 @@ defineProps<{
 
 defineOptions({
     layout: {
-        title: 'Create an account',
-        description: 'Enter your details below to create your account',
+        title: 'Buat akun',
+        description: 'Masukkan data Anda untuk membuat akun',
     },
 });
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head :title="t('auth.register')" />
 
     <Form
         :action="register()"
@@ -32,7 +35,7 @@ defineOptions({
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <FormField id="name" label="Name" :error="errors.name" required>
+            <FormField id="name" :label="t('auth.name')" :error="errors.name" required>
                 <template #default="field">
                     <Input
                         type="text"
@@ -41,7 +44,7 @@ defineOptions({
                         :tabindex="1"
                         autocomplete="name"
                         name="name"
-                        placeholder="Full name"
+                        :placeholder="t('auth.fullName')"
                         v-bind="field"
                     />
                 </template>
@@ -49,7 +52,7 @@ defineOptions({
 
             <FormField
                 id="email"
-                label="Email address"
+                :label="t('auth.emailAddress')"
                 :error="errors.email"
                 required
             >
@@ -68,7 +71,7 @@ defineOptions({
 
             <FormField
                 id="password"
-                label="Password"
+                :label="t('auth.password')"
                 :error="errors.password"
                 required
             >
@@ -78,7 +81,7 @@ defineOptions({
                         :tabindex="3"
                         autocomplete="new-password"
                         name="password"
-                        placeholder="Password"
+                        :placeholder="t('auth.password')"
                         :passwordrules="passwordRules"
                         v-bind="field"
                     />
@@ -87,7 +90,7 @@ defineOptions({
 
             <FormField
                 id="password_confirmation"
-                label="Confirm password"
+                :label="t('auth.confirmPassword')"
                 :error="errors.password_confirmation"
                 required
             >
@@ -97,7 +100,7 @@ defineOptions({
                         :tabindex="4"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        placeholder="Confirm password"
+                        :placeholder="t('auth.confirmPassword')"
                         :passwordrules="passwordRules"
                         v-bind="field"
                     />
@@ -112,17 +115,17 @@ defineOptions({
                 data-test="register-user-button"
             >
                 <Spinner v-if="processing" />
-                Create account
+                {{ t('auth.register') }}
             </Button>
         </div>
 
         <div class="text-center text-sm text-muted-foreground">
-            Already have an account?
+            {{ t('auth.alreadyHaveAccount') }}
             <TextLink
                 :href="login()"
                 class="underline underline-offset-4"
                 :tabindex="6"
-                >Log in</TextLink
+                >{{ t('auth.login') }}</TextLink
             >
         </div>
     </Form>

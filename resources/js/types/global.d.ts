@@ -1,5 +1,7 @@
 import type { Auth } from '@/types/auth';
 
+export type FrontendTranslations = Record<string, string | Record<string, unknown>>;
+
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
     interface ImportMetaEnv {
@@ -17,6 +19,8 @@ declare module '@inertiajs/core' {
     export interface InertiaConfig {
         sharedPageProps: {
             name: string;
+            locale: string;
+            translations: FrontendTranslations;
             auth: Auth;
             sidebarOpen: boolean;
             [key: string]: unknown;

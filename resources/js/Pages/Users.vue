@@ -15,6 +15,7 @@ import type {
     DataTablePagination,
     DataTableRowClickEvent,
 } from '@/components/data-table';
+import { useTranslations } from '@/composables/useTranslations';
 import { index as usersIndex } from '@/routes/users';
 
 interface User {
@@ -35,12 +36,14 @@ const props = defineProps<{
     };
 }>();
 
+const { t } = useTranslations();
+
 const columns: DataTableColumn[] = [
-    { field: 'name', header: 'Name', sortable: true },
-    { field: 'email', header: 'Email', sortable: true },
+    { field: 'name', header: t('users.name'), sortable: true },
+    { field: 'email', header: t('users.email'), sortable: true },
     {
         field: 'created_at',
-        header: 'Created',
+        header: t('users.created'),
         sortable: true,
         width: '100px',
         align: 'right',
@@ -111,7 +114,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Users',
+                title: 'Pengguna',
                 href: usersIndex(),
             },
         ],
@@ -120,12 +123,12 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Users" />
+    <Head :title="t('users.title')" />
 
     <div class="flex flex-col px-4 py-6">
         <Heading
-            title="Users"
-            description="Manage the users who can access this application"
+            :title="t('users.title')"
+            :description="t('users.description')"
         />
 
         <DataTable
@@ -134,13 +137,13 @@ defineOptions({
             :pagination="props.users"
             :url="usersIndex().url"
             :search="props.filters?.search"
-            empty-message="No users found."
+            :empty-message="t('users.noUsers')"
             @row-click="handleRowClick"
         >
             <template #header>
                 <Button type="button" @click="openCreate">
                     <Plus class="size-4" />
-                    Add user
+                    {{ t('users.add') }}
                 </Button>
             </template>
             <template #body:name="{ data }">
@@ -160,13 +163,13 @@ defineOptions({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        title="Delete user"
+                        :title="t('users.delete')"
                         :disabled="data.id === currentUserId"
                         @click="openDelete(data)"
                         class="cursor-pointer"
                     >
                         <X class="size-4" />
-                        <span class="sr-only">Delete {{ data.name }}</span>
+                        <span class="sr-only">{{ t('users.deleteLabel', { name: data.name }) }}</span>
                     </Button>
                 </div>
             </template>
@@ -175,11 +178,11 @@ defineOptions({
 
     <Dialog
         v-model:open="formOpen"
-        :title="selectedUser ? 'Edit user' : 'Add user'"
+        :title="selectedUser ? t('users.edit') : t('users.add')"
         :description="
             selectedUser
-                ? 'Update this user account.'
-                : 'Create a user account with a secure password.'
+                ? t('users.updateDescription')
+                : t('users.createDescription')
         "
     >
         <template #default="{ close }">
@@ -192,7 +195,7 @@ defineOptions({
             >
                 <FormField
                     id="edit-name"
-                    label="Name"
+                    :label="t('users.name')"
                     :error="errors.name"
                     required
                 >
@@ -209,7 +212,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="edit-email"
-                    label="Email"
+                    :label="t('users.email')"
                     :error="errors.email"
                     required
                 >
@@ -227,7 +230,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="edit-password"
-                    label="New password"
+                    :label="t('users.newPassword')"
                     :error="errors.password"
                 >
                     <template #default="field">
@@ -242,7 +245,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="edit-password-confirmation"
-                    label="Confirm new password"
+                    :label="t('users.confirmNewPassword')"
                     :error="errors.password_confirmation"
                 >
                     <template #default="field">
@@ -262,10 +265,10 @@ defineOptions({
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
                     <Button type="button" variant="secondary" @click="close"
-                        >Cancel</Button
+                        >{{ t('common.cancel') }}</Button
                     >
                     <Button type="submit" :disabled="processing || validating"
-                        >Save changes</Button
+                        >{{ t('common.save') }}</Button
                     >
                 </div>
             </Form>
@@ -280,7 +283,7 @@ defineOptions({
             >
                 <FormField
                     id="name"
-                    label="Name"
+                    :label="t('users.name')"
                     :error="errors.name"
                     required
                 >
@@ -295,7 +298,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="email"
-                    label="Email"
+                    :label="t('users.email')"
                     :error="errors.email"
                     required
                 >
@@ -311,7 +314,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="password"
-                    label="Password"
+                    :label="t('auth.password')"
                     :error="errors.password"
                     required
                 >
@@ -327,7 +330,7 @@ defineOptions({
                 </FormField>
                 <FormField
                     id="password-confirmation"
-                    label="Confirm password"
+                    :label="t('auth.confirmPassword')"
                     :error="errors.password_confirmation"
                     required
                 >
@@ -348,10 +351,10 @@ defineOptions({
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
                     <Button type="button" variant="secondary" @click="close"
-                        >Cancel</Button
+                        >{{ t('common.cancel') }}</Button
                     >
                     <Button type="submit" :disabled="processing || validating"
-                        >Add user</Button
+                        >{{ t('users.add') }}</Button
                     >
                 </div>
             </Form>
@@ -360,16 +363,16 @@ defineOptions({
 
     <Dialog
         v-model:open="deleteOpen"
-        title="Delete user?"
-        :description="`This permanently removes ${selectedUser?.name} and cannot be undone.`"
+        :title="`${t('users.delete')}?`"
+        :description="`${t('users.deleteLabel', { name: selectedUser?.name ?? '' })}. Tindakan ini tidak dapat dibatalkan.`"
     >
         <template #default="{ close }">
             <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button type="button" variant="secondary" @click="close"
-                    >Cancel</Button
+                    >{{ t('common.cancel') }}</Button
                 >
                 <Button type="button" variant="destructive" @click="deleteUser"
-                    >Delete user</Button
+                    >{{ t('users.delete') }}</Button
                 >
             </div>
         </template>

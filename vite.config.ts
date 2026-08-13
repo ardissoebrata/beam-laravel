@@ -31,4 +31,19 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    const primeVueMatch = id.match(
+                        /\/node_modules\/(?:@primevue\/icons|primevue)\/([^/]+)/,
+                    );
+
+                    if (primeVueMatch) {
+                        return `primevue-${primeVueMatch[1]}`;
+                    }
+                },
+            },
+        },
+    },
 });

@@ -144,6 +144,23 @@ test('user can be updated without changing the password', function () {
     expect($managedUser->password)->toBe($password);
 });
 
+test('user can be updated when the password fields are null', function () {
+    $user = User::factory()->create();
+    $managedUser = User::factory()->create(['password' => 'old-password']);
+    $password = $managedUser->password;
+
+    $response = $this->actingAs($user)->patch(route('users.update', $managedUser), [
+        'name' => 'Updated User',
+        'email' => $managedUser->email,
+        'password' => null,
+        'password_confirmation' => null,
+    ]);
+
+    $response->assertSessionHasNoErrors()->assertRedirect(route('users.index'));
+    expect($managedUser->refresh()->name)->toBe('Updated User');
+    expect($managedUser->password)->toBe($password);
+});
+
 test('user password can be updated', function () {
     $user = User::factory()->create();
     $managedUser = User::factory()->create();

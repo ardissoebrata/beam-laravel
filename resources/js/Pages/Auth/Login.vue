@@ -8,13 +8,16 @@ import PasswordInput from '@/components/base/PasswordInput.vue';
 import TextLink from '@/components/base/TextLink.vue';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/composables/useTranslations';
 import { forgotPassword, register } from '@/lib/authRoutes';
 import { store } from '@/routes/login';
 
+const { t } = useTranslations();
+
 defineOptions({
     layout: {
-        title: 'Log in to your account',
-        description: 'Enter your email and password below to log in',
+        title: 'Masuk ke akun Anda',
+        description: 'Masukkan email dan kata sandi Anda untuk masuk',
     },
 });
 
@@ -25,7 +28,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head :title="t('auth.login')" />
 
     <div
         v-if="status"
@@ -43,7 +46,7 @@ defineProps<{
         <div class="grid gap-6">
             <FormField
                 id="email"
-                label="Email address"
+                :label="t('auth.emailAddress')"
                 :error="errors.email"
                 required
             >
@@ -63,20 +66,20 @@ defineProps<{
 
             <FormField
                 id="password"
-                label="Password"
+                :label="t('auth.password')"
                 :error="errors.password"
                 required
             >
                 <template #default="field">
                     <div class="flex items-center justify-between">
-                        <span class="sr-only">Password</span>
+                        <span class="sr-only">{{ t('auth.password') }}</span>
                         <TextLink
                             v-if="canResetPassword"
                             :href="forgotPassword()"
                             class="text-sm"
                             :tabindex="5"
                         >
-                            Forgot your password?
+                            {{ t('auth.forgotPassword') }}
                         </TextLink>
                     </div>
                     <PasswordInput
@@ -84,7 +87,7 @@ defineProps<{
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        placeholder="Password"
+                        :placeholder="t('auth.password')"
                         v-bind="field"
                     />
                 </template>
@@ -93,7 +96,7 @@ defineProps<{
             <div class="flex items-center justify-between">
                 <Label for="remember" class="flex items-center space-x-3">
                     <Checkbox id="remember" name="remember" :tabindex="3" />
-                    <span>Remember me</span>
+                    <span>{{ t('auth.rememberMe') }}</span>
                 </Label>
             </div>
 
@@ -105,7 +108,7 @@ defineProps<{
                 data-test="login-button"
             >
                 <Spinner v-if="processing" />
-                Log in
+                {{ t('auth.login') }}
             </Button>
         </div>
 
@@ -113,8 +116,8 @@ defineProps<{
             v-if="$page.props.auth.features.registration"
             class="text-center text-sm text-muted-foreground"
         >
-            Don't have an account?
-            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+            {{ t('auth.noAccount') }}
+            <TextLink :href="register()" :tabindex="5">{{ t('auth.signUp') }}</TextLink>
         </div>
     </Form>
 </template>

@@ -1,16 +1,10 @@
 import {
-    BookOpen,
-    Database,
-    FolderGit2,
     LayoutGrid,
     Settings,
-    Settings2,
     Users,
 } from '@lucide/vue';
 import { dashboard } from '@/routes';
-import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editProfile } from '@/routes/profile';
-import { edit as editSecurity } from '@/routes/security';
 import { index as usersIndex } from '@/routes/users';
 import type {
     NavItem,
@@ -19,20 +13,20 @@ import type {
 
 export const treeNavGroups: NavigationGroup[] = [
     {
-        label: 'Main',
+        label: 'Utama',
         nodes: [
             {
-                title: 'Dashboard',
+                title: 'Dasbor',
                 href: dashboard().url,
                 icon: LayoutGrid,
             },
         ],
     },
     {
-        label: 'Resources',
+        label: 'Sumber daya',
         nodes: [
             {
-                title: 'Users',
+                title: 'Pengguna',
                 href: usersIndex().url,
                 icon: Users,
             },
@@ -71,7 +65,7 @@ export const footerNavItems: NavItem[] = [
 
 export const userNavItems: NavItem[] = [
     {
-        title: 'Settings',
+        title: 'Pengaturan',
         href: editProfile(),
         icon: Settings,
     },

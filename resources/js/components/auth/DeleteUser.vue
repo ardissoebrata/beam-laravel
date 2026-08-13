@@ -8,32 +8,35 @@ import Heading from '@/components/base/Heading.vue';
 import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
+import { useTranslations } from '@/composables/useTranslations';
+
 const passwordInput = useTemplateRef('passwordInput');
+const { t } = useTranslations();
 </script>
 
 <template>
     <div class="space-y-6">
         <Heading
             variant="small"
-            title="Delete account"
-            description="Delete your account and all of its resources"
+            :title="t('account.deleteTitle')"
+            description="Hapus akun dan semua sumber dayanya"
         />
         <div
             class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
         >
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
-                <p class="font-medium">Warning</p>
+                <p class="font-medium">Peringatan</p>
                 <p class="text-sm">
-                    Please proceed with caution, this cannot be undone.
+                    Harap lanjutkan dengan hati-hati, tindakan ini tidak dapat dibatalkan.
                 </p>
             </div>
             <Dialog
-                title="Are you sure you want to delete your account?"
-                description="Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account."
+                :title="t('account.deleteConfirm')"
+                :description="t('account.passwordToConfirm')"
             >
                 <template #trigger>
                     <Button variant="destructive" data-test="delete-user-button"
-                        >Delete account</Button
+                        >{{ t('account.deleteTitle') }}</Button
                     >
                 </template>
                 <template #default="{ close }">
@@ -49,13 +52,13 @@ const passwordInput = useTemplateRef('passwordInput');
                     >
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only"
-                                >Password</Label
+                                >{{ t('auth.password') }}</Label
                             >
                             <PasswordInput
                                 id="password"
                                 name="password"
                                 ref="passwordInput"
-                                placeholder="Password"
+                                :placeholder="t('auth.password')"
                             />
                             <InputError :message="errors.password" />
                         </div>
@@ -73,7 +76,7 @@ const passwordInput = useTemplateRef('passwordInput');
                                     }
                                 "
                             >
-                                Cancel
+                                {{ t('common.cancel') }}
                             </Button>
 
                             <Button
@@ -82,7 +85,7 @@ const passwordInput = useTemplateRef('passwordInput');
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
                             >
-                                Delete account
+                                {{ t('account.deleteTitle') }}
                             </Button>
                         </div>
                     </Form>

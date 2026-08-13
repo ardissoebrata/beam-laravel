@@ -57,7 +57,13 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        $user->update($request->validated());
+        $validated = $request->validated();
+
+        if (! filled($validated['password'] ?? null)) {
+            unset($validated['password']);
+        }
+
+        $user->update($validated);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('User updated.')]);
 
@@ -66,7 +72,7 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user): RedirectResponse
     {
-        abort_if($request->user()->is($user), 403, 'You cannot delete your own account here.');
+        abort_if($request->user()->is($user), 403, __('You cannot delete your own account here.'));
 
         $user->delete();
 

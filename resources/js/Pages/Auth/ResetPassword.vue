@@ -7,12 +7,15 @@ import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
 import PasswordInput from '@/components/base/PasswordInput.vue';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/composables/useTranslations';
 import { resetPassword } from '@/lib/authRoutes';
+
+const { t } = useTranslations();
 
 defineOptions({
     layout: {
-        title: 'Reset password',
-        description: 'Please enter your new password below',
+        title: 'Atur ulang kata sandi',
+        description: 'Masukkan kata sandi baru Anda di bawah ini',
     },
 });
 
@@ -26,7 +29,7 @@ const inputEmail = ref(props.email);
 </script>
 
 <template>
-    <Head title="Reset password" />
+    <Head :title="t('auth.resetTitle')" />
 
     <Form
         :action="resetPassword(token)"
@@ -37,7 +40,7 @@ const inputEmail = ref(props.email);
     >
         <div class="grid gap-6">
             <div class="grid gap-2">
-                <Label for="email">Email</Label>
+                <Label for="email">{{ t('auth.emailAddress') }}</Label>
                 <Input
                     id="email"
                     type="email"
@@ -51,27 +54,27 @@ const inputEmail = ref(props.email);
             </div>
 
             <div class="grid gap-2">
-                <Label for="password">Password</Label>
+                <Label for="password">{{ t('auth.password') }}</Label>
                 <PasswordInput
                     id="password"
                     name="password"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
                     autofocus
-                    placeholder="Password"
+                    :placeholder="t('auth.password')"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="password_confirmation"> Confirm password </Label>
+                <Label for="password_confirmation">{{ t('auth.confirmPassword') }}</Label>
                 <PasswordInput
                     id="password_confirmation"
                     name="password_confirmation"
                     autocomplete="new-password"
                     class="mt-1 block w-full"
-                    placeholder="Confirm password"
+                    :placeholder="t('auth.confirmPassword')"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password_confirmation" />
@@ -84,7 +87,7 @@ const inputEmail = ref(props.email);
                 data-test="reset-password-button"
             >
                 <Spinner v-if="processing" />
-                Reset password
+                {{ t('auth.resetPassword') }}
             </Button>
         </div>
     </Form>

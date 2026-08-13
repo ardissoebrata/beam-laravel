@@ -8,6 +8,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { useTranslations } from '@/composables/useTranslations';
 import { userNavItems } from '@/config/navigation';
 import { logout } from '@/routes';
 import type { User } from '@/types';
@@ -21,6 +22,7 @@ const handleLogout = () => {
 };
 
 defineProps<Props>();
+const { t } = useTranslations();
 </script>
 
 <template>
@@ -52,7 +54,7 @@ defineProps<Props>();
             data-test="logout-button"
         >
             <LogOut class="mr-2 h-4 w-4" />
-            Log out
+            {{ t('navigation.logOut') }}
         </Link>
     </DropdownMenuItem>
 </template>

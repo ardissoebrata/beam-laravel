@@ -6,13 +6,16 @@ import InputError from '@/components/base/InputError.vue';
 import Label from '@/components/base/Label.vue';
 import TextLink from '@/components/base/TextLink.vue';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/composables/useTranslations';
 import { forgotPassword } from '@/lib/authRoutes';
 import { login } from '@/routes';
 
+const { t } = useTranslations();
+
 defineOptions({
     layout: {
-        title: 'Forgot password',
-        description: 'Enter your email to receive a password reset link',
+        title: 'Lupa kata sandi',
+        description: 'Masukkan email Anda untuk menerima tautan pengaturan ulang kata sandi',
     },
 });
 
@@ -22,7 +25,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Forgot password" />
+    <Head :title="t('auth.forgotTitle')" />
 
     <div
         v-if="status"
@@ -38,7 +41,7 @@ defineProps<{
             v-slot="{ errors, processing }"
         >
             <div class="grid gap-2">
-                <Label for="email">Email address</Label>
+                <Label for="email">{{ t('auth.emailAddress') }}</Label>
                 <Input
                     id="email"
                     type="email"
@@ -57,14 +60,14 @@ defineProps<{
                     data-test="email-password-reset-link-button"
                 >
                     <Spinner v-if="processing" />
-                    Email password reset link
+                    {{ t('auth.sendResetLink') }}
                 </Button>
             </div>
         </Form>
 
         <div class="space-x-1 text-center text-sm text-muted-foreground">
-            <span>Or, return to</span>
-            <TextLink :href="login()">log in</TextLink>
+            <span>{{ t('auth.orReturnTo') }}</span>
+            <TextLink :href="login()">{{ t('auth.login').toLowerCase() }}</TextLink>
         </div>
     </div>
 </template>

@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/input-otp';
 import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/composables/useAppearance';
+import { useTranslations } from '@/composables/useTranslations';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import { confirm } from '@/routes/two-factor';
 import type { TwoFactorConfigContent } from '@/types';
@@ -27,6 +28,7 @@ const { resolvedAppearance } = useAppearance();
 
 const props = defineProps<Props>();
 const isOpen = defineModel<boolean>('isOpen');
+const { t } = useTranslations();
 
 const { copy, copied } = useClipboard();
 const { qrCodeSvg, manualSetupKey, clearSetupData, fetchSetupData, errors } =
@@ -40,26 +42,24 @@ const pinInputContainerRef = useTemplateRef('pinInputContainerRef');
 const modalConfig = computed<TwoFactorConfigContent>(() => {
     if (props.twoFactorEnabled) {
         return {
-            title: 'Two-factor authentication enabled',
-            description:
-                'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
-            buttonText: 'Close',
+            title: t('twoFactor.enabled'),
+            description: t('twoFactor.enabledDescription'),
+            buttonText: t('common.close'),
         };
     }
 
     if (showVerificationStep.value) {
         return {
-            title: 'Verify authentication code',
-            description: 'Enter the 6-digit code from your authenticator app',
-            buttonText: 'Continue',
+            title: t('twoFactor.verifyTitle'),
+            description: 'Masukkan kode 6 digit dari aplikasi autentikator Anda',
+            buttonText: t('common.continue'),
         };
     }
 
     return {
-        title: 'Enable two-factor authentication',
-        description:
-            'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
-        buttonText: 'Continue',
+        title: 'Aktifkan autentikasi dua faktor',
+        description: 'Untuk menyelesaikan pengaktifan autentikasi dua faktor, pindai kode QR atau masukkan kunci pengaturan di aplikasi autentikator Anda',
+        buttonText: t('common.continue'),
     };
 });
 
@@ -193,7 +193,7 @@ watch(
                                 class="absolute inset-0 top-1/2 h-px w-full bg-border"
                             />
                             <span class="relative bg-card px-2 py-1"
-                                >or, enter the code manually</span
+                                >atau masukkan kode secara manual</span
                             >
                         </div>
 
