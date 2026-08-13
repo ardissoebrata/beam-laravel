@@ -13,6 +13,9 @@ Proyek ini menyediakan struktur awal backend, autentikasi, frontend, otorisasi, 
 - Laravel Fortify untuk autentikasi
 - Laravel Wayfinder untuk route helper TypeScript
 - Spatie Laravel Permission untuk role dan permission
+- Laravel Boost untuk membantu pengembangan berbasis konteks Laravel
+- PrimeVue untuk komponen UI, termasuk DataTable untuk menampilkan data tabular
+- Laravel Precognition untuk validasi form secara real-time
 - Pest 5 untuk testing
 
 ## Prasyarat
@@ -51,9 +54,7 @@ Untuk menjalankan server Laravel, queue worker, dan Vite secara bersamaan:
 php artisan dev
 ```
 
-```text
-Note: tunggu hingga muncul pesan 'Inertia SSR module graph warmed up' sebelum membuka aplikasi di browser.
-```
+> Tunggu hingga muncul pesan '**Inertia SSR module graph warmed up**' sebelum membuka aplikasi di browser.
 
 Aplikasi tersedia di `http://localhost:8000`.
 
