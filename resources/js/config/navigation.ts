@@ -19,26 +19,12 @@ import type {
 
 export const treeNavGroups: NavigationGroup[] = [
     {
-        label: 'Workspace',
+        label: 'Main',
         nodes: [
             {
                 title: 'Dashboard',
                 href: dashboard().url,
                 icon: LayoutGrid,
-            },
-            {
-                title: 'Projects',
-                icon: FolderGit2,
-                children: [
-                    { title: 'Active projects' },
-                    { title: 'Archived projects' },
-                    { title: 'Project templates' },
-                ],
-            },
-            {
-                title: 'Users',
-                href: usersIndex().url,
-                icon: Users,
             },
         ],
     },
@@ -46,45 +32,41 @@ export const treeNavGroups: NavigationGroup[] = [
         label: 'Resources',
         nodes: [
             {
-                title: 'Data library',
-                icon: Database,
-                children: [
-                    {
-                        title: 'Reports',
-                        children: [
-                            { title: 'Monthly reports' },
-                            { title: 'Quarterly reports' },
-                            { title: 'Export history' },
-                        ],
-                    },
-                    { title: 'Datasets' },
-                    { title: 'Integrations' },
-                ],
+                title: 'Users',
+                href: usersIndex().url,
+                icon: Users,
             },
-            {
-                title: 'Settings',
-                icon: Settings2,
-                children: [
-                    { title: 'Profile', href: editProfile().url },
-                    { title: 'Security', href: editSecurity().url },
-                    { title: 'Appearance', href: editAppearance().url },
-                ],
-            },
+            // {
+            //     title: 'Data library',
+            //     icon: Database,
+            //     children: [
+            //         {
+            //             title: 'Reports',
+            //             children: [
+            //                 { title: 'Monthly reports' },
+            //                 { title: 'Quarterly reports' },
+            //                 { title: 'Export history' },
+            //             ],
+            //         },
+            //         { title: 'Datasets' },
+            //         { title: 'Integrations' },
+            //     ],
+            // },
         ],
     },
 ];
 
 export const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/vue-starter-kit',
+    //     icon: FolderGit2,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#vue',
+    //     icon: BookOpen,
+    // },
 ];
 
 export const userNavItems: NavItem[] = [
