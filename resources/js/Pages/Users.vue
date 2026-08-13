@@ -191,7 +191,7 @@ defineOptions({
                 v-bind="UserController.update.form(selectedUser.id)"
                 class="space-y-6"
                 @success="closeForm"
-                v-slot="{ errors, processing, validate, invalid, validating }"
+                v-slot="{ errors, processing, validate, invalid }"
             >
                 <FormField
                     id="edit-name"
@@ -267,7 +267,7 @@ defineOptions({
                     <Button type="button" variant="secondary" @click="close"
                         >{{ t('common.cancel') }}</Button
                     >
-                    <Button type="submit" :disabled="processing || validating"
+                    <Button type="submit" :disabled="processing"
                         >{{ t('common.save') }}</Button
                     >
                 </div>
@@ -279,7 +279,7 @@ defineOptions({
                 class="space-y-6"
                 reset-on-success
                 @success="closeForm"
-                v-slot="{ errors, processing, validate, invalid, validating }"
+                v-slot="{ errors, processing, validate, invalid }"
             >
                 <FormField
                     id="name"
@@ -353,7 +353,7 @@ defineOptions({
                     <Button type="button" variant="secondary" @click="close"
                         >{{ t('common.cancel') }}</Button
                     >
-                    <Button type="submit" :disabled="processing || validating"
+                    <Button type="submit" :disabled="processing"
                         >{{ t('users.add') }}</Button
                     >
                 </div>
