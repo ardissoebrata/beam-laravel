@@ -176,6 +176,7 @@ Tambahkan secrets berikut pada **Repository secrets**:
 | Secret | Nilai |
 | --- | --- |
 | `DEPLOY_HOST` | Hostname atau IP VPS |
+| `DEPLOY_DOMAIN` | Domain aplikasi yang digunakan Nginx, misalnya `beam-laravel.mybeam.me` |
 | `DEPLOY_USER` | Username Linux untuk deploy |
 | `DEPLOY_SSH_KEY` | Private key SSH untuk user deploy |
 | `DEPLOY_KNOWN_HOSTS` | Host key VPS yang telah diverifikasi |

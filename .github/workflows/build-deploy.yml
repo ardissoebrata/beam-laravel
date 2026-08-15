@@ -96,6 +96,7 @@ jobs:
 
     env:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
       DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || '22' }}
       DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
       DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
@@ -112,6 +113,7 @@ jobs:
         run: |
           set -eu
           test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_DOMAIN"
           test -n "$DEPLOY_USER"
           test -n "$DEPLOY_SSH_KEY"
           test -n "$DEPLOY_KNOWN_HOSTS"
@@ -169,4 +171,4 @@ jobs:
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
             "$DEPLOY_USER@$DEPLOY_HOST" \
-            "curl --fail --silent --show-error -H 'Host: $DEPLOY_HOST' http://127.0.0.1/up > /dev/null"
+            "curl --fail --silent --show-error -H 'Host: $DEPLOY_DOMAIN' http://127.0.0.1/up > /dev/null"
