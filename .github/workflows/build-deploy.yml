@@ -49,17 +49,17 @@ jobs:
           php artisan key:generate --force
           php artisan migrate --force
 
+      - name: Build frontend assets
+        run: |
+          npm run build
+          test -f public/build/manifest.json
+
       - name: Run CI checks (lint temporarily disabled)
         run: |
           npm run format:check
           composer run types:check
           php artisan config:clear --ansi
           php artisan test --compact
-
-      - name: Build frontend assets
-        run: |
-          npm run build
-          test -f public/build/manifest.json
 
       - name: Install production PHP dependencies
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
