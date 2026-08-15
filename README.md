@@ -80,6 +80,73 @@ composer run ci:check
 
 Perintah quality check mencakup formatter PHP, lint dan type check frontend, analisis PHPStan, serta test suite.
 
+## Setup Workflow Build, Test, dan Deploy
+
+Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job:
+
+- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan `composer ci:check`, `npm run build`, lalu membuat artifact production.
+- `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`deploy/remote-deploy.sh`](deploy/remote-deploy.sh).
+
+### Prasyarat VPS
+
+Siapkan VPS Linux dengan PHP 8.4, PHP-FPM, database production, queue worker, `tar`, `curl`, dan akses `sudo` terbatas untuk reload PHP-FPM serta restart queue. Nginx harus mengarah ke:
+
+```text
+/var/www/beam-laravel/current/public
+```
+
+Buat struktur directory berikut dan pastikan user deploy dapat menulisnya:
+
+```text
+/var/www/beam-laravel/
+|-- current -> releases/<release>
+|-- releases/
+`-- shared/
+   |-- .env
+   `-- storage/
+```
+
+Buat `/var/www/beam-laravel/shared/.env` langsung di server. Jangan menyimpan `.env`, `APP_KEY`, password database, atau private key di repository. Queue worker harus menjalankan `php artisan queue:work` melalui Supervisor atau systemd.
+
+Script deployment menggunakan service PHP-FPM `php8.4-fpm` secara default. User deploy perlu memiliki izin untuk menjalankan `sudo systemctl reload php8.4-fpm` dan `php artisan queue:restart`.
+
+### Konfigurasi GitHub
+
+Buat GitHub Environment bernama `production`, lalu tambahkan secrets berikut pada environment tersebut:
+
+| Secret | Nilai |
+| --- | --- |
+| `DEPLOY_HOST` | Hostname atau IP VPS |
+| `DEPLOY_USER` | Username Linux untuk deploy |
+| `DEPLOY_SSH_KEY` | Private key SSH untuk user deploy |
+| `DEPLOY_KNOWN_HOSTS` | Host key VPS yang telah diverifikasi |
+| `DEPLOY_PORT` | Opsional, default `22` |
+
+Tambahkan public key pasangan `DEPLOY_SSH_KEY` ke `~/.ssh/authorized_keys` user deploy. Isi `DEPLOY_KNOWN_HOSTS` dari host key yang diperoleh melalui jaringan tepercaya, misalnya:
+
+```bash
+ssh-keyscan -p 22 example.com
+```
+
+Aktifkan required reviewers pada environment `production` bila deploy perlu persetujuan manual. Workflow tidak menjalankan deploy dari pull request.
+
+### Deploy dan Rollback
+
+Push perubahan ke `main` atau jalankan workflow manual pada branch `main` dari tab **Actions**. Job `deploy` akan membuat release berdasarkan commit SHA, mengekstrak artifact, menjalankan migration/cache, mengganti symlink `current`, me-restart queue worker, dan me-reload PHP-FPM.
+
+Workflow memeriksa endpoint health Laravel `/up` setelah deployment. Periksa juga log Laravel dan status queue worker di VPS.
+
+Lima release terakhir disimpan di `releases/`. Untuk rollback, arahkan symlink `current` ke release sebelumnya, lalu reload PHP-FPM dan restart queue worker:
+
+```bash
+cd /var/www/beam-laravel
+ln -sfn releases/<release-sebelumnya> current
+sudo systemctl reload php8.4-fpm
+php current/artisan queue:restart
+```
+
+Rollback kode tidak otomatis membatalkan migration database. Pastikan migration production kompatibel dengan release sebelumnya sebelum melakukan rollback.
+
 ## Struktur Penting
 
 ```text
