@@ -57,6 +57,29 @@ rm -f "$release_dir/storage" "$release_dir/.env"
 ln -s "$shared_dir/storage" "$release_dir/storage"
 ln -s "$shared_dir/.env" "$release_dir/.env"
 
+db_connection="$(sed -n 's/^DB_CONNECTION=//p' "$shared_dir/.env" | head -n 1 | tr -d '\r\"' | xargs)"
+db_connection="${db_connection:-sqlite}"
+case "$db_connection" in
+  sqlite)
+    if ! php -m | grep -iq '^pdo_sqlite$'; then
+      printf 'SQLite is configured, but the PHP CLI pdo_sqlite driver is missing. Install the PHP SQLite extension or configure another production database.\n' >&2
+      exit 1
+    fi
+    ;;
+  mysql|mariadb)
+    if ! php -m | grep -iq '^pdo_mysql$'; then
+      printf 'MySQL is configured, but the PHP CLI pdo_mysql driver is missing. Install the PHP MySQL extension or configure another production database.\n' >&2
+      exit 1
+    fi
+    ;;
+  pgsql)
+    if ! php -m | grep -iq '^pdo_pgsql$'; then
+      printf 'PostgreSQL is configured, but the PHP CLI pdo_pgsql driver is missing. Install the PostgreSQL PHP extension or configure another production database.\n' >&2
+      exit 1
+    fi
+    ;;
+esac
+
 cd "$release_dir"
 php artisan down --retry=15
 maintenance_enabled=true

@@ -84,18 +84,30 @@ Perintah quality check mencakup formatter PHP, lint dan type check frontend, ana
 
 Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job:
 
-- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan `composer ci:check`, `npm run build`, lalu membuat artifact production.
+- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan formatting check, PHPStan, test suite, `npm run build`, lalu membuat artifact production. ESLint sementara tidak dijalankan di GitHub Actions.
 - `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`deploy/remote-deploy.sh`](deploy/remote-deploy.sh).
 
 ### Prasyarat VPS
 
-Siapkan VPS Linux dengan PHP 8.4, PHP-FPM, database production, queue worker, `tar`, `curl`, dan akses `sudo` terbatas untuk reload PHP-FPM serta restart queue. Nginx harus mengarah ke:
+Siapkan VPS Linux dengan PHP 8.4, PHP-FPM, driver PHP untuk database production, queue worker, `tar`, `curl`, dan akses `sudo` terbatas untuk reload PHP-FPM serta restart queue. Nginx harus mengarah ke:
 
 ```text
 /var/www/beam-laravel/current/public
 ```
 
-Buat struktur directory berikut dan pastikan user deploy dapat menulisnya:
+Buat struktur directory berikut dan pastikan user `deploy` dapat menulisnya. Jalankan provisioning berikut sebagai user yang memiliki akses `sudo`:
+
+```bash
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/releases
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared/storage
+sudo chown -R deploy:deploy /var/www/beam-laravel
+```
+
+Ganti `deploy` jika username pada secret `DEPLOY_USER` berbeda. Perintah ini penting karena GitHub Actions menjalankan `mkdir`, `scp`, ekstraksi artifact, dan pergantian symlink sebagai user tersebut.
+
+Struktur directory yang dihasilkan:
 
 ```text
 /var/www/beam-laravel/
@@ -108,11 +120,28 @@ Buat struktur directory berikut dan pastikan user deploy dapat menulisnya:
 
 Buat `/var/www/beam-laravel/shared/.env` langsung di server. Jangan menyimpan `.env`, `APP_KEY`, password database, atau private key di repository. Queue worker harus menjalankan `php artisan queue:work` melalui Supervisor atau systemd.
 
+Jika production menggunakan SQLite, install driver dan simpan database di luar directory release agar tidak hilang saat release baru dibuat:
+
+```bash
+sudo apt install php8.4-sqlite3
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared/database
+sudo -u deploy touch /var/www/beam-laravel/shared/database/database.sqlite
+```
+
+Atur path absolut di `/var/www/beam-laravel/shared/.env`:
+
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/beam-laravel/shared/database/database.sqlite
+```
+
+Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` production.
+
 Script deployment menggunakan service PHP-FPM `php8.4-fpm` secara default. User deploy perlu memiliki izin untuk menjalankan `sudo systemctl reload php8.4-fpm` dan `php artisan queue:restart`.
 
 ### Konfigurasi GitHub
 
-Buat GitHub Environment bernama `production`, lalu tambahkan secrets berikut pada environment tersebut:
+Tambahkan secrets berikut pada **Repository secrets**:
 
 | Secret | Nilai |
 | --- | --- |
