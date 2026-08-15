@@ -146,12 +146,16 @@ sudo apt install acl
 sudo setfacl -m u:www-data:rwx /var/www/beam-laravel/shared/database
 sudo setfacl -d -m u::rwx,g::rwx,o::---,u:www-data:rwx,m::rwx /var/www/beam-laravel/shared/database
 sudo setfacl -m u:www-data:rw /var/www/beam-laravel/shared/database/database.sqlite
+sudo setfacl -R -m u:www-data:rwx /var/www/beam-laravel/shared/storage
+sudo find /var/www/beam-laravel/shared/storage -type d -exec setfacl -d -m u::rwx,g::rwx,o::---,u:www-data:rwx,m::rwx {} +
 sudo -u www-data test -r /var/www/beam-laravel/shared/database/database.sqlite
 sudo -u www-data test -w /var/www/beam-laravel/shared/database/database.sqlite
 sudo -u www-data test -w /var/www/beam-laravel/shared/database
 ```
 
 Deployment akan membuat `release/database/database.sqlite` sebagai symlink ke file shared tersebut, sementara `database/migrations` tetap berada di setiap release. Jangan gunakan `chmod 777` untuk mengatasi error SQLite readonly.
+
+Directory shared `storage` juga menggunakan ACL karena PHP-FPM membuat file cache dan compiled view di dalamnya. Deployment tidak mengubah permission file storage yang mungkin dibuat oleh PHP-FPM.
 
 Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` production.
 

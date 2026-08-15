@@ -106,7 +106,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan event:cache
 
-chmod -R 775 "$shared_dir/storage" "$release_dir/bootstrap/cache"
+chmod -R 775 "$release_dir/bootstrap/cache"
 
 rm -f "$current_link.next"
 ln -s "$release_dir" "$current_link.next"
