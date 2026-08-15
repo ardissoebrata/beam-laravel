@@ -167,7 +167,3 @@ Setelah setup selesai, gunakan proyek ini sebagai titik awal untuk:
 3. Membuat halaman Vue di `resources/js/pages`.
 4. Menentukan role dan permission sesuai kebutuhan akses.
 5. Menambahkan feature test untuk setiap alur penting.
-
-## Lisensi
-
-Proyek ini menggunakan lisensi MIT.
