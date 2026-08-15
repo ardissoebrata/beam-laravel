@@ -1,6 +1,6 @@
 export { default as DataTable } from './DataTable.vue';
 export type {
-	DataTableColumn,
-	DataTablePagination,
-	DataTableRowClickEvent,
+    DataTableColumn,
+    DataTablePagination,
+    DataTableRowClickEvent,
 } from './types';

@@ -46,7 +46,8 @@ onMounted(async () => {
             </CardTitle>
             <CardDescription>
                 Kode pemulihan membantu Anda mendapatkan kembali akses jika
-                kehilangan perangkat 2FA. Simpan di pengelola kata sandi yang aman.
+                kehilangan perangkat 2FA. Simpan di pengelola kata sandi yang
+                aman.
             </CardDescription>
         </CardHeader>
         <CardContent>

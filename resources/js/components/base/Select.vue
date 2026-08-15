@@ -34,7 +34,9 @@ const handleUpdate = (value: AcceptableValue) => {
         return;
     }
 
-    const option = props.options.find((item) => String(item.value) === String(value));
+    const option = props.options.find(
+        (item) => String(item.value) === String(value),
+    );
 
     if (option) {
         emits('update:modelValue', option.value);

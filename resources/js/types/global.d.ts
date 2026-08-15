@@ -1,6 +1,9 @@
 import type { Auth } from '@/types/auth';
 
-export type FrontendTranslations = Record<string, string | Record<string, unknown>>;
+export type FrontendTranslations = Record<
+    string,
+    string | Record<string, unknown>
+>;
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {

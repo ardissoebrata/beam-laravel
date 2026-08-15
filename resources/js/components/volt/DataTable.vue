@@ -22,7 +22,7 @@
             }"
         >
             <div
-                class="flex flex-wrap items-center justify-between gap-4 w-full"
+                class="flex w-full flex-wrap items-center justify-between gap-4"
             >
                 <span class="text-sm text-muted-foreground">
                     {{
@@ -49,12 +49,23 @@
                         <AngleRightIcon />
                     </Button>
                 </div>
-                <label class="flex items-center gap-2 text-sm text-surface-700 dark:text-surface-0">
+                <label
+                    class="flex items-center gap-2 text-sm text-surface-700 dark:text-surface-0"
+                >
                     <Select
                         :model-value="rows"
-                        :options="(props.rowsPerPageOptions ?? [rows]).map((option) => ({ value: option, label: `${option} per halaman` }))"
-                        class="h-9 rounded-md border border-surface-300 bg-surface-0 px-2 text-sm dark:border-surface-700 dark:bg-surface-950 text-surface-400 dark:text-surface-400"
-                        @update:model-value="(value) => rowChangeCallback(Number(value))"
+                        :options="
+                            (props.rowsPerPageOptions ?? [rows]).map(
+                                (option) => ({
+                                    value: option,
+                                    label: `${option} per halaman`,
+                                }),
+                            )
+                        "
+                        class="h-9 rounded-md border border-surface-300 bg-surface-0 px-2 text-sm text-surface-400 dark:border-surface-700 dark:bg-surface-950 dark:text-surface-400"
+                        @update:model-value="
+                            (value) => rowChangeCallback(Number(value))
+                        "
                     >
                     </Select>
                 </label>

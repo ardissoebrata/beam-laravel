@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
                             v-model="searchValue"
                             type="search"
                             :placeholder="searchPlaceholder"
-                            class="h-9 w-full rounded-md border border-input bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:w-72"
+                            class="h-9 w-full rounded-md border border-input bg-background px-3 text-sm transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:w-72"
                             @input="handleSearch"
                         />
                     </div>
@@ -194,10 +194,7 @@ onBeforeUnmount(() => {
                     <span class="font-medium">{{ column.header }}</span>
                 </template>
                 <template #body="slotProps">
-                    <slot
-                        :name="`body:${column.field}`"
-                        v-bind="slotProps"
-                    >
+                    <slot :name="`body:${column.field}`" v-bind="slotProps">
                         {{ slotProps.data[column.field] }}
                     </slot>
                 </template>

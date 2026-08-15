@@ -10,17 +10,19 @@ export function useTranslations() {
         () => page.props.translations as FrontendTranslations,
     );
 
-    const t = (key: string, replacements: Record<string, string | number> = {}): string => {
-        const value = key.split('.').reduce<TranslationValue | undefined>(
-            (current, part) => {
+    const t = (
+        key: string,
+        replacements: Record<string, string | number> = {},
+    ): string => {
+        const value = key
+            .split('.')
+            .reduce<TranslationValue | undefined>((current, part) => {
                 if (!current || typeof current === 'string') {
                     return undefined;
                 }
 
                 return current[part] as TranslationValue | undefined;
-            },
-            translations.value,
-        );
+            }, translations.value);
 
         if (typeof value !== 'string') {
             return key;

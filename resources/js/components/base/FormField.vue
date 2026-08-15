@@ -39,7 +39,9 @@ const describedBy = computed(() => {
     <div class="grid gap-2">
         <Label :for="id">
             {{ label }}
-            <span v-if="required" class="text-destructive" aria-hidden="true">*</span>
+            <span v-if="required" class="text-destructive" aria-hidden="true"
+                >*</span
+            >
         </Label>
 
         <slot

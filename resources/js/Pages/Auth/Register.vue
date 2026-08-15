@@ -35,7 +35,12 @@ defineOptions({
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <FormField id="name" :label="t('auth.name')" :error="errors.name" required>
+            <FormField
+                id="name"
+                :label="t('auth.name')"
+                :error="errors.name"
+                required
+            >
                 <template #default="field">
                     <Input
                         type="text"

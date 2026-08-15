@@ -82,9 +82,9 @@ const toggleRecoveryMode = (clearErrors: () => void): void => {
                     </div>
                     <InputError :message="errors.code" />
                 </div>
-                <Button type="submit" class="w-full" :disabled="processing"
-                    >{{ t('common.continue') }}</Button
-                >
+                <Button type="submit" class="w-full" :disabled="processing">{{
+                    t('common.continue')
+                }}</Button>
                 <div class="text-center text-sm text-muted-foreground">
                     <span>{{ t('auth.orYouCan') }} </span>
                     <button
@@ -113,9 +113,9 @@ const toggleRecoveryMode = (clearErrors: () => void): void => {
                     required
                 />
                 <InputError :message="errors.recovery_code" />
-                <Button type="submit" class="w-full" :disabled="processing"
-                    >{{ t('common.continue') }}</Button
-                >
+                <Button type="submit" class="w-full" :disabled="processing">{{
+                    t('common.continue')
+                }}</Button>
 
                 <div class="text-center text-sm text-muted-foreground">
                     <span>{{ t('auth.orYouCan') }} </span>

@@ -38,7 +38,11 @@ const { t } = useTranslations();
             :key="item.title"
             :as-child="true"
         >
-            <Link class="block w-full cursor-pointer" :href="item.href" prefetch>
+            <Link
+                class="block w-full cursor-pointer"
+                :href="item.href"
+                prefetch
+            >
                 <component :is="item.icon" class="mr-2 h-4 w-4" />
                 {{ item.title }}
             </Link>

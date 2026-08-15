@@ -163,7 +163,9 @@ defineOptions({
                 <span class="text-muted-foreground">{{ data.email }}</span>
             </template>
             <template #body:role="{ data }">
-                <span class="text-muted-foreground">{{ data.role ?? '-' }}</span>
+                <span class="text-muted-foreground">{{
+                    data.role ?? '-'
+                }}</span>
             </template>
             <template #body:created_at="{ data }">
                 <span class="text-muted-foreground">{{
@@ -182,7 +184,9 @@ defineOptions({
                         class="cursor-pointer"
                     >
                         <X class="size-4" />
-                        <span class="sr-only">{{ t('users.deleteLabel', { name: data.name }) }}</span>
+                        <span class="sr-only">{{
+                            t('users.deleteLabel', { name: data.name })
+                        }}</span>
                     </Button>
                 </div>
             </template>
@@ -241,10 +245,19 @@ defineOptions({
                         />
                     </template>
                 </FormField>
-                <FormField id="edit-role" :label="t('users.role')" :error="errors.role" required>
+                <FormField
+                    id="edit-role"
+                    :label="t('users.role')"
+                    :error="errors.role"
+                    required
+                >
                     <template #default="field">
                         <input type="hidden" name="role" :value="formRole" />
-                        <Select v-model="formRole" :options="roleOptions" v-bind="field" />
+                        <Select
+                            v-model="formRole"
+                            :options="roleOptions"
+                            v-bind="field"
+                        />
                     </template>
                 </FormField>
                 <FormField
@@ -283,12 +296,12 @@ defineOptions({
                 <div
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
-                    <Button type="button" variant="secondary" @click="close"
-                        >{{ t('common.cancel') }}</Button
-                    >
-                    <Button type="submit" :disabled="processing"
-                        >{{ t('common.save') }}</Button
-                    >
+                    <Button type="button" variant="secondary" @click="close">{{
+                        t('common.cancel')
+                    }}</Button>
+                    <Button type="submit" :disabled="processing">{{
+                        t('common.save')
+                    }}</Button>
                 </div>
             </Form>
 
@@ -331,10 +344,19 @@ defineOptions({
                         />
                     </template>
                 </FormField>
-                <FormField id="role" :label="t('users.role')" :error="errors.role" required>
+                <FormField
+                    id="role"
+                    :label="t('users.role')"
+                    :error="errors.role"
+                    required
+                >
                     <template #default="field">
                         <input type="hidden" name="role" :value="formRole" />
-                        <Select v-model="formRole" :options="roleOptions" v-bind="field" />
+                        <Select
+                            v-model="formRole"
+                            :options="roleOptions"
+                            v-bind="field"
+                        />
                     </template>
                 </FormField>
                 <FormField
@@ -375,12 +397,12 @@ defineOptions({
                 <div
                     class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
                 >
-                    <Button type="button" variant="secondary" @click="close"
-                        >{{ t('common.cancel') }}</Button
-                    >
-                    <Button type="submit" :disabled="processing"
-                        >{{ t('users.add') }}</Button
-                    >
+                    <Button type="button" variant="secondary" @click="close">{{
+                        t('common.cancel')
+                    }}</Button>
+                    <Button type="submit" :disabled="processing">{{
+                        t('users.add')
+                    }}</Button>
                 </div>
             </Form>
         </template>
@@ -393,10 +415,13 @@ defineOptions({
     >
         <template #default="{ close }">
             <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <Button type="button" variant="secondary" @click="close"
-                    >{{ t('common.cancel') }}</Button
-                >
-                <Button type="button" variant="destructive" @click="deleteUser"
+                <Button type="button" variant="secondary" @click="close">{{
+                    t('common.cancel')
+                }}</Button>
+                <Button
+                    type="button"
+                    variant="destructive"
+                    @click="deleteUser"
                     >{{ t('users.delete') }}</Button
                 >
             </div>

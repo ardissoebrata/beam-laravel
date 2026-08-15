@@ -27,7 +27,8 @@ const { t } = useTranslations();
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
                 <p class="font-medium">Peringatan</p>
                 <p class="text-sm">
-                    Harap lanjutkan dengan hati-hati, tindakan ini tidak dapat dibatalkan.
+                    Harap lanjutkan dengan hati-hati, tindakan ini tidak dapat
+                    dibatalkan.
                 </p>
             </div>
             <Dialog
@@ -35,7 +36,9 @@ const { t } = useTranslations();
                 :description="t('account.passwordToConfirm')"
             >
                 <template #trigger>
-                    <Button variant="destructive" data-test="delete-user-button"
+                    <Button
+                        variant="destructive"
+                        data-test="delete-user-button"
                         >{{ t('account.deleteTitle') }}</Button
                     >
                 </template>
@@ -51,9 +54,9 @@ const { t } = useTranslations();
                         v-slot="{ errors, processing, reset, clearErrors }"
                     >
                         <div class="grid gap-2">
-                            <Label for="password" class="sr-only"
-                                >{{ t('auth.password') }}</Label
-                            >
+                            <Label for="password" class="sr-only">{{
+                                t('auth.password')
+                            }}</Label>
                             <PasswordInput
                                 id="password"
                                 name="password"

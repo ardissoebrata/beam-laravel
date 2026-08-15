@@ -117,7 +117,9 @@ defineProps<{
             class="text-center text-sm text-muted-foreground"
         >
             {{ t('auth.noAccount') }}
-            <TextLink :href="register()" :tabindex="5">{{ t('auth.signUp') }}</TextLink>
+            <TextLink :href="register()" :tabindex="5">{{
+                t('auth.signUp')
+            }}</TextLink>
         </div>
     </Form>
 </template>

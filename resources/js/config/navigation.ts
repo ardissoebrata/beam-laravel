@@ -1,15 +1,8 @@
-import {
-    LayoutGrid,
-    Settings,
-    Users,
-} from '@lucide/vue';
+import { LayoutGrid, Settings, Users } from '@lucide/vue';
 import { dashboard } from '@/routes';
 import { edit as editProfile } from '@/routes/profile';
 import { index as usersIndex } from '@/routes/users';
-import type {
-    NavItem,
-    NavigationGroup,
-} from '@/types';
+import type { NavItem, NavigationGroup } from '@/types';
 
 export const treeNavGroups: NavigationGroup[] = [
     {

@@ -15,7 +15,8 @@ const { t } = useTranslations();
 defineOptions({
     layout: {
         title: 'Lupa kata sandi',
-        description: 'Masukkan email Anda untuk menerima tautan pengaturan ulang kata sandi',
+        description:
+            'Masukkan email Anda untuk menerima tautan pengaturan ulang kata sandi',
     },
 });
 
@@ -67,7 +68,9 @@ defineProps<{
 
         <div class="space-x-1 text-center text-sm text-muted-foreground">
             <span>{{ t('auth.orReturnTo') }}</span>
-            <TextLink :href="login()">{{ t('auth.login').toLowerCase() }}</TextLink>
+            <TextLink :href="login()">{{
+                t('auth.login').toLowerCase()
+            }}</TextLink>
         </div>
     </div>
 </template>

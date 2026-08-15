@@ -13,7 +13,8 @@ const { t } = useTranslations();
 defineOptions({
     layout: {
         title: 'Konfirmasi kata sandi',
-        description: 'Ini adalah area aman aplikasi. Konfirmasikan kata sandi Anda sebelum melanjutkan.',
+        description:
+            'Ini adalah area aman aplikasi. Konfirmasikan kata sandi Anda sebelum melanjutkan.',
     },
 });
 </script>

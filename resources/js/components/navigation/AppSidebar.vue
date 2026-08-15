@@ -16,17 +16,17 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import {
-    footerNavItems,
-    treeNavGroups,
-} from '@/config/navigation';
+import { footerNavItems, treeNavGroups } from '@/config/navigation';
 import { dashboard } from '@/routes';
 import type { NavigationNode } from '@/types';
 
 const page = usePage();
 
 const canViewNode = (node: NavigationNode): boolean => {
-    if (node.permission && !page.props.auth.permissions.includes(node.permission)) {
+    if (
+        node.permission &&
+        !page.props.auth.permissions.includes(node.permission)
+    ) {
         return false;
     }
 
@@ -69,7 +69,10 @@ const visibleNavGroups = computed(() =>
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter v-if="footerNavItems.length > 0" :items="footerNavItems" />
+            <NavFooter
+                v-if="footerNavItems.length > 0"
+                :items="footerNavItems"
+            />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

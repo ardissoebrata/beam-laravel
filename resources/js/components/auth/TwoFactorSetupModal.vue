@@ -51,14 +51,16 @@ const modalConfig = computed<TwoFactorConfigContent>(() => {
     if (showVerificationStep.value) {
         return {
             title: t('twoFactor.verifyTitle'),
-            description: 'Masukkan kode 6 digit dari aplikasi autentikator Anda',
+            description:
+                'Masukkan kode 6 digit dari aplikasi autentikator Anda',
             buttonText: t('common.continue'),
         };
     }
 
     return {
         title: 'Aktifkan autentikasi dua faktor',
-        description: 'Untuk menyelesaikan pengaktifan autentikasi dua faktor, pindai kode QR atau masukkan kunci pengaturan di aplikasi autentikator Anda',
+        description:
+            'Untuk menyelesaikan pengaktifan autentikasi dua faktor, pindai kode QR atau masukkan kunci pengaturan di aplikasi autentikator Anda',
         buttonText: t('common.continue'),
     };
 });

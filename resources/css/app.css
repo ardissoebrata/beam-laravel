@@ -8,9 +8,9 @@
 
 @import 'tailwindcss';
 
-@import "tailwindcss-primeui";
+@import 'tailwindcss-primeui';
 @import 'tw-animate-css';
-@import "shadcn-vue/tailwind.css";
+@import 'shadcn-vue/tailwind.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -80,7 +80,6 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -100,7 +99,6 @@
 }
 
 @layer utilities {
-
     body,
     html {
         --font-sans:
@@ -124,17 +122,17 @@
     --p-primary-900: oklch(0.145 0 0);
     --p-primary-950: oklch(0.145 0 0); */
 
-    --p-primary-50:  oklch(0.98  0.10 277.023);
-    --p-primary-100: oklch(0.95  0.13 277.023);
-    --p-primary-200: oklch(0.90  0.16 277.023);
-    --p-primary-300: oklch(0.80  0.20 277.023);
+    --p-primary-50: oklch(0.98 0.1 277.023);
+    --p-primary-100: oklch(0.95 0.13 277.023);
+    --p-primary-200: oklch(0.9 0.16 277.023);
+    --p-primary-300: oklch(0.8 0.2 277.023);
     --p-primary-400: oklch(0.457 0.24 277.023);
-    --p-primary-500: oklch(0.40  0.22 277.023);
-    --p-primary-600: oklch(0.33  0.20 277.023);
-    --p-primary-700: oklch(0.26  0.17 277.023);
-    --p-primary-800: oklch(0.19  0.14 277.023);
-    --p-primary-900: oklch(0.13  0.11 277.023);
-    --p-primary-950: oklch(0.09  0.09 277.023);
+    --p-primary-500: oklch(0.4 0.22 277.023);
+    --p-primary-600: oklch(0.33 0.2 277.023);
+    --p-primary-700: oklch(0.26 0.17 277.023);
+    --p-primary-800: oklch(0.19 0.14 277.023);
+    --p-primary-900: oklch(0.13 0.11 277.023);
+    --p-primary-950: oklch(0.09 0.09 277.023);
 
     --p-surface-0: oklch(1 0 0);
     --p-surface-50: oklch(0.97 0 0);
@@ -255,9 +253,17 @@
     --p-content-border-color: oklch(1 0 0 / 10%);
     --p-content-hover-background: var(--p-surface-800);
     --p-content-hover-color: var(--p-surface-0);
-    --p-highlight-background: color-mix(in srgb, var(--p-primary-500), transparent 84%);
+    --p-highlight-background: color-mix(
+        in srgb,
+        var(--p-primary-500),
+        transparent 84%
+    );
     --p-highlight-color: var(--p-surface-0);
-    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-500), transparent 76%);
+    --p-highlight-focus-background: color-mix(
+        in srgb,
+        var(--p-primary-500),
+        transparent 76%
+    );
     --p-highlight-focus-color: var(--p-surface-0);
     --p-text-color: var(--p-surface-0);
     --p-text-hover-color: var(--p-surface-0);
@@ -312,7 +318,7 @@
     }
 
     button:not(:disabled),
-    [role="button"]:not(:disabled) {
+    [role='button']:not(:disabled) {
         cursor: pointer;
     }
 }
