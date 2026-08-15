@@ -137,7 +137,15 @@ DB_DATABASE=/var/www/beam-laravel/shared/database/database.sqlite
 
 Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` production.
 
-Script deployment menggunakan service PHP-FPM `php8.4-fpm` secara default. User deploy perlu memiliki izin untuk menjalankan `sudo systemctl reload php8.4-fpm` dan `php artisan queue:restart`.
+Script deployment menggunakan service PHP-FPM `php8.4-fpm` secara default. Berikan izin `sudo` tanpa password hanya untuk reload service tersebut:
+
+```bash
+echo 'deploy ALL=(root) NOPASSWD: /usr/bin/systemctl reload php8.4-fpm' | sudo tee /etc/sudoers.d/beam-deploy
+sudo chmod 440 /etc/sudoers.d/beam-deploy
+sudo visudo -cf /etc/sudoers.d/beam-deploy
+```
+
+Ganti `deploy` jika username pada secret `DEPLOY_USER` berbeda. Script menggunakan `sudo -n` agar workflow gagal langsung jika izin ini belum tersedia.
 
 ### Konfigurasi GitHub
 

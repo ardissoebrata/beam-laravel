@@ -98,7 +98,7 @@ mv -Tf "$current_link.next" "$current_link"
 php artisan up
 maintenance_enabled=false
 php artisan queue:restart
-sudo systemctl reload "$php_fpm_service"
+sudo -n systemctl reload "$php_fpm_service"
 
 find "$deploy_path/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' \
   | sort -nr \
