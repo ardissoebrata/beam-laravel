@@ -169,4 +169,4 @@ jobs:
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
             "$DEPLOY_USER@$DEPLOY_HOST" \
-            "curl --fail --silent --show-error http://127.0.0.1/up > /dev/null"
+            "curl --fail --silent --show-error -H 'Host: $DEPLOY_HOST' http://127.0.0.1/up > /dev/null"
