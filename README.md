@@ -24,7 +24,7 @@ Pastikan perangkat pengembangan sudah memiliki:
 
 - PHP 8.4+
 - Composer
-- Node.js dan npm
+- Node.js 24 dan npm
 - Database yang didukung Laravel
 
 Konfigurasi bawaan menggunakan SQLite.
@@ -82,14 +82,17 @@ Perintah quality check mencakup formatter PHP, lint dan type check frontend, ana
 
 ## Setup Workflow Build, Test, dan Deploy
 
-Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job:
+Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job untuk server development:
 
-- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan formatting check, PHPStan, test suite, `npm run build`, lalu membuat artifact production. ESLint sementara tidak dijalankan di GitHub Actions.
+- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan formatting check, PHPStan, test suite, `npm run build`, lalu membuat artifact dengan dependency Composer development agar Faker tersedia. ESLint sementara tidak dijalankan di GitHub Actions.
 - `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`deploy/remote-deploy.sh`](deploy/remote-deploy.sh).
+- `deploy` menggunakan mode `development`, sehingga setiap deployment menjalankan `php artisan migrate:fresh --seed --force`. Semua tabel dan data pada database development akan dihapus lalu dibuat ulang.
+
+Workflow ini ditujukan untuk server development dengan `APP_ENV=local` dan `APP_DEBUG=true`. Jangan arahkan workflow ini ke database production karena proses deployment development bersifat destruktif.
 
 ### Prasyarat VPS
 
-Siapkan VPS Linux dengan PHP 8.4, PHP-FPM, driver PHP untuk database production, queue worker, `tar`, `curl`, dan akses `sudo` terbatas untuk reload PHP-FPM serta restart queue. Nginx harus mengarah ke:
+Siapkan VPS Linux dengan PHP 8.4, PHP-FPM, driver PHP untuk database, queue worker, `tar`, `curl`, dan akses `sudo` terbatas untuk reload PHP-FPM serta restart queue. Nginx harus mengarah ke:
 
 ```text
 /var/www/beam-laravel/current/public
@@ -123,7 +126,7 @@ Struktur directory yang dihasilkan:
 
 Buat `/var/www/beam-laravel/shared/.env` langsung di server. Jangan menyimpan `.env`, `APP_KEY`, password database, atau private key di repository. Queue worker harus menjalankan `php artisan queue:work` melalui Supervisor atau systemd.
 
-Jika production menggunakan SQLite, install driver dan simpan database di luar directory release agar tidak hilang saat release baru dibuat:
+Jika server menggunakan SQLite, install driver dan simpan database di luar directory release agar tidak hilang saat release baru dibuat:
 
 ```bash
 sudo apt install php8.4-sqlite3
@@ -157,7 +160,7 @@ Deployment akan membuat `release/database/database.sqlite` sebagai symlink ke fi
 
 Directory shared `storage` juga menggunakan ACL karena PHP-FPM membuat file cache dan compiled view di dalamnya. Deployment tidak mengubah permission file storage yang mungkin dibuat oleh PHP-FPM.
 
-Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` production.
+Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` server.
 
 Script deployment menggunakan service PHP-FPM `php8.4-fpm` secara default. Berikan izin `sudo` tanpa password hanya untuk reload service tersebut:
 
@@ -192,7 +195,9 @@ Aktifkan required reviewers pada environment `production` bila deploy perlu pers
 
 ### Deploy dan Rollback
 
-Push perubahan ke `main` atau jalankan workflow manual pada branch `main` dari tab **Actions**. Job `deploy` akan membuat release berdasarkan commit SHA, mengekstrak artifact, menjalankan migration/cache, mengganti symlink `current`, me-restart queue worker, dan me-reload PHP-FPM.
+Push perubahan ke `main` atau jalankan workflow manual pada branch `main` dari tab **Actions**. Job `deploy` akan membuat release dengan format UTC `YYYYMMDDHHMMSS-run_number`, mengekstrak artifact, menjalankan `migrate:fresh --seed`, menjalankan cache, mengganti symlink `current`, me-restart queue worker, dan me-reload PHP-FPM.
+
+Setelah health check berhasil, artifact GitHub Actions akan dihapus otomatis. Jika deployment gagal, artifact tetap tersedia untuk debugging.
 
 Workflow memeriksa endpoint health Laravel `/up` setelah deployment. Periksa juga log Laravel dan status queue worker di VPS.
 

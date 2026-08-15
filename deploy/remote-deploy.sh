@@ -4,6 +4,7 @@ set -euo pipefail
 
 deploy_path="${1:?Deployment path is required}"
 release_name="${2:?Release name is required}"
+deployment_mode="${3:-production}"
 php_fpm_service="${PHP_FPM_SERVICE:-php8.4-fpm}"
 release_dir="$deploy_path/releases/$release_name"
 shared_dir="$deploy_path/shared"
@@ -16,6 +17,15 @@ if [[ ! "$release_name" =~ ^[A-Za-z0-9._-]+$ ]]; then
   printf 'Invalid release name: %s\n' "$release_name" >&2
   exit 1
 fi
+
+case "$deployment_mode" in
+  development|production)
+    ;;
+  *)
+    printf 'Invalid deployment mode: %s\n' "$deployment_mode" >&2
+    exit 1
+    ;;
+esac
 
 if [[ ! -d "$release_dir" || -L "$release_dir" ]]; then
   printf 'Release directory is missing or invalid: %s\n' "$release_dir" >&2
@@ -44,7 +54,7 @@ mkdir -p "$shared_dir/storage/app/public" \
   "$shared_dir/storage/logs"
 
 if [[ ! -f "$shared_dir/.env" ]]; then
-  printf 'Production environment file is missing: %s/.env\n' "$shared_dir" >&2
+  printf 'Shared environment file is missing: %s/.env\n' "$shared_dir" >&2
   exit 1
 fi
 
@@ -101,7 +111,11 @@ cd "$release_dir"
 php artisan down --retry=15
 maintenance_enabled=true
 
-php artisan migrate --force
+if [[ "$deployment_mode" == development ]]; then
+  php artisan migrate:fresh --seed --force
+else
+  php artisan migrate --force
+fi
 php artisan config:cache
 php artisan route:cache
 php artisan event:cache
