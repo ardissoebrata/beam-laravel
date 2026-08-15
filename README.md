@@ -102,6 +102,7 @@ sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel
 sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/releases
 sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared
 sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared/storage
+sudo install -d -o deploy -g deploy -m 775 /var/www/beam-laravel/shared/database
 sudo chown -R deploy:deploy /var/www/beam-laravel
 ```
 
@@ -115,6 +116,8 @@ Struktur directory yang dihasilkan:
 |-- releases/
 `-- shared/
    |-- .env
+   |-- database/
+   |  `-- database.sqlite
    `-- storage/
 ```
 
@@ -134,6 +137,21 @@ Atur path absolut di `/var/www/beam-laravel/shared/.env`:
 DB_CONNECTION=sqlite
 DB_DATABASE=/var/www/beam-laravel/shared/database/database.sqlite
 ```
+
+SQLite harus dapat ditulis oleh user PHP-FPM dan user `deploy`. SQLite juga dapat membuat file journal, WAL, dan SHM di directory database, sehingga PHP-FPM membutuhkan izin tulis pada file database dan directory induknya. Periksa user pool PHP-FPM terlebih dahulu, lalu ganti `www-data` pada perintah berikut jika berbeda:
+
+```bash
+ps aux | grep php-fpm
+sudo apt install acl
+sudo setfacl -m u:www-data:rwx /var/www/beam-laravel/shared/database
+sudo setfacl -d -m u::rwx,g::rwx,o::---,u:www-data:rwx,m::rwx /var/www/beam-laravel/shared/database
+sudo setfacl -m u:www-data:rw /var/www/beam-laravel/shared/database/database.sqlite
+sudo -u www-data test -r /var/www/beam-laravel/shared/database/database.sqlite
+sudo -u www-data test -w /var/www/beam-laravel/shared/database/database.sqlite
+sudo -u www-data test -w /var/www/beam-laravel/shared/database
+```
+
+Deployment akan membuat `release/database/database.sqlite` sebagai symlink ke file shared tersebut, sementara `database/migrations` tetap berada di setiap release. Jangan gunakan `chmod 777` untuk mengatasi error SQLite readonly.
 
 Jika menggunakan MySQL/MariaDB, install `php8.4-mysql` dan isi `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` pada `.env` production.
 

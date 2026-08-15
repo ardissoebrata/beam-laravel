@@ -7,6 +7,8 @@ release_name="${2:?Release name is required}"
 php_fpm_service="${PHP_FPM_SERVICE:-php8.4-fpm}"
 release_dir="$deploy_path/releases/$release_name"
 shared_dir="$deploy_path/shared"
+shared_database_dir="$shared_dir/database"
+shared_database_path="$shared_database_dir/database.sqlite"
 current_link="$deploy_path/current"
 maintenance_enabled=false
 
@@ -20,7 +22,7 @@ if [[ ! -d "$release_dir" || -L "$release_dir" ]]; then
   exit 1
 fi
 
-for required_path in artisan vendor/autoload.php public/build/manifest.json bootstrap/cache; do
+for required_path in artisan vendor/autoload.php public/build/manifest.json bootstrap/cache database/migrations; do
   if [[ ! -e "$release_dir/$required_path" ]]; then
     printf 'Required release path is missing: %s\n' "$release_dir/$required_path" >&2
     exit 1
@@ -65,6 +67,21 @@ case "$db_connection" in
       printf 'SQLite is configured, but the PHP CLI pdo_sqlite driver is missing. Install the PHP SQLite extension or configure another production database.\n' >&2
       exit 1
     fi
+
+    mkdir -p "$shared_database_dir"
+    if [[ -L "$shared_database_path" || ( -e "$shared_database_path" && ! -f "$shared_database_path" ) ]]; then
+      printf 'Shared SQLite database path is not a regular file: %s\n' "$shared_database_path" >&2
+      exit 1
+    fi
+    touch "$shared_database_path"
+
+    release_database_path="$release_dir/database/database.sqlite"
+    if [[ -e "$release_database_path" && ! -L "$release_database_path" ]]; then
+      printf 'Release SQLite database path must be a symlink before replacement: %s\n' "$release_database_path" >&2
+      exit 1
+    fi
+    rm -f -- "$release_database_path"
+    ln -s "$shared_database_path" "$release_database_path"
     ;;
   mysql|mariadb)
     if ! php -m | grep -iq '^pdo_mysql$'; then
