@@ -128,8 +128,12 @@ jobs:
             echo "DEPLOY_KNOWN_HOSTS does not contain a matching host key for $known_hosts_target."
             exit 1
           }
-          printf '%s' "$DEPLOY_SSH_KEY" > "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
           chmod 600 "$HOME/.ssh/deploy_key"
+          ssh-keygen -y -P '' -f "$HOME/.ssh/deploy_key" > /dev/null || {
+            echo "DEPLOY_SSH_KEY is not a valid unencrypted OpenSSH private key."
+            exit 1
+          }
 
       - name: Create release directory
         run: |
