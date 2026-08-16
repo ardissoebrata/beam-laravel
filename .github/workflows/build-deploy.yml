@@ -82,7 +82,7 @@ jobs:
             .
 
       - name: Upload release artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-${{ steps.release_metadata.outputs.release_name }}
           path: ${{ runner.temp }}/release.tar.gz
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Download release artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: release-${{ env.RELEASE_NAME }}
           path: ${{ runner.temp }}/release
