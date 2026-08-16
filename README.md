@@ -85,7 +85,7 @@ Perintah quality check mencakup formatter PHP, lint dan type check frontend, ana
 Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job untuk server development:
 
 - `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan formatting check, PHPStan, test suite, `npm run build`, lalu membuat artifact dengan dependency Composer development agar Faker tersedia. ESLint sementara tidak dijalankan di GitHub Actions.
-- `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`deploy/remote-deploy.sh`](deploy/remote-deploy.sh).
+- `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`.github/workflows/remote-deploy.sh`](.github/workflows/remote-deploy.sh).
 - `deploy` menggunakan mode `development`, sehingga setiap deployment menjalankan `php artisan migrate:fresh --seed --force`. Semua tabel dan data pada database development akan dihapus lalu dibuat ulang.
 
 Workflow ini ditujukan untuk server development dengan `APP_ENV=local` dan `APP_DEBUG=true`. Jangan arahkan workflow ini ke database production karena proses deployment development bersifat destruktif.

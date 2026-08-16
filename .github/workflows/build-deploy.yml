@@ -73,7 +73,7 @@ jobs:
             --exclude='./.env' \
             --exclude='./.env.*' \
             --exclude='./.git' \
-            --exclude='./.github' \
+            --exclude='./.github/workflows/build-deploy.yml' \
             --exclude='./node_modules' \
             --exclude='./storage' \
             --exclude='./tests' \
@@ -166,7 +166,7 @@ jobs:
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
             "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_PATH/releases/$RELEASE_NAME' && tar -xzf release.tar.gz && rm release.tar.gz && bash deploy/remote-deploy.sh '$DEPLOY_PATH' '$RELEASE_NAME' development"
+            "cd '$DEPLOY_PATH/releases/$RELEASE_NAME' && tar -xzf release.tar.gz && rm release.tar.gz && bash .github/workflows/remote-deploy.sh '$DEPLOY_PATH' '$RELEASE_NAME' development"
 
       - name: Verify application health
         run: |
