@@ -80,15 +80,18 @@ composer run ci:check
 
 Perintah quality check mencakup formatter PHP, lint dan type check frontend, analisis PHPStan, serta test suite.
 
-## Setup Workflow Build, Test, dan Deploy
+## Setup Workflow Build dan Test
 
-Workflow GitHub Actions di [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) memiliki dua job untuk server development:
+Workflow GitHub Actions di [`.github/workflows/build-test.yml`](.github/workflows/build-test.yml) hanya menjalankan build dan test:
 
-- `build` berjalan pada pull request, push ke `main`, dan manual dispatch. Job ini menjalankan formatting check, PHPStan, test suite, `npm run build`, lalu membuat artifact dengan dependency Composer development agar Faker tersedia. ESLint sementara tidak dijalankan di GitHub Actions.
-- `deploy` hanya berjalan setelah `build` berhasil pada `main` atau manual dispatch. Artifact dikirim ke VPS sebagai release baru dan diaktifkan dengan [`.github/workflows/remote-deploy.sh`](.github/workflows/remote-deploy.sh).
-- `deploy` menggunakan mode `development`, sehingga setiap deployment menjalankan `php artisan migrate:fresh --seed --force`. Semua tabel dan data pada database development akan dihapus lalu dibuat ulang.
+- Workflow berjalan pada pull request, push ke `main`, dan manual dispatch. Workflow ini menjalankan formatting check, PHPStan, test suite, dan `npm run build`.
+- Workflow template tidak melakukan deployment dan tidak membuat release artifact. Script [`.github/workflows/remote-deploy.sh`](.github/workflows/remote-deploy.sh) dipertahankan sebagai referensi mekanisme deployment untuk aplikasi child seperti `beam-laravel-demo`.
 
-Workflow ini ditujukan untuk server development dengan `APP_ENV=local` dan `APP_DEBUG=true`. Jangan arahkan workflow ini ke database production karena proses deployment development bersifat destruktif.
+Workflow ini menggunakan aplikasi test lokal dan tidak membutuhkan secret deployment.
+
+### Referensi Mekanisme Deployment
+
+Bagian berikut mendokumentasikan prasyarat VPS untuk aplikasi child yang menggunakan script deployment template. Workflow parent sendiri tidak menjalankan deployment.
 
 ### Prasyarat VPS
 
@@ -193,9 +196,9 @@ ssh-keyscan -p 22 example.com
 
 Aktifkan required reviewers pada environment `production` bila deploy perlu persetujuan manual. Workflow tidak menjalankan deploy dari pull request.
 
-### Deploy dan Rollback
+### Deploy dan Rollback Untuk Aplikasi Child
 
-Push perubahan ke `main` atau jalankan workflow manual pada branch `main` dari tab **Actions**. Job `deploy` akan membuat release dengan format UTC `YYYYMMDDHHMMSS-run_number`, mengekstrak artifact, menjalankan `migrate:fresh --seed`, menjalankan cache, mengganti symlink `current`, me-restart queue worker, dan me-reload PHP-FPM.
+Workflow deployment aplikasi child membangun release pada push ke `main` atau manual dispatch, mengekstrak archive, menjalankan `migrate:fresh --seed`, menjalankan cache, mengganti symlink `current`, me-restart queue worker, dan me-reload PHP-FPM.
 
 Setelah health check berhasil, artifact GitHub Actions akan dihapus otomatis. Jika deployment gagal, artifact tetap tersedia untuk debugging.
 
